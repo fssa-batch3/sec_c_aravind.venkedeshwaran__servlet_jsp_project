@@ -86,7 +86,7 @@ public class UpdateTaskServlet extends HttpServlet {
         	
         	taskservice.updateTask(task);
         	
-        	request.setAttribute("updateSuccess", task.getTaskName()+" Task Updated Successfully!");
+        	request.setAttribute("success", task.getTaskName()+" Task Updated Successfully!");
 			
 			rd = request.getRequestDispatcher("TaskServlet");
         }
@@ -94,7 +94,7 @@ public class UpdateTaskServlet extends HttpServlet {
         	System.out.println(e.getMessage());
         	e.printStackTrace();
         	
-        	request.setAttribute("updateError", e.getMessage());
+        	request.setAttribute("error", e.getMessage());
 			
 			rd = request.getRequestDispatcher("TaskServlet");
         }

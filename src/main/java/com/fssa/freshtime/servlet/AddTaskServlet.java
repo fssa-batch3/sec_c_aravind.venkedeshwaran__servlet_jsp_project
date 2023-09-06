@@ -82,16 +82,16 @@ public class AddTaskServlet extends HttpServlet {
         	
         	taskservice.addTask(task);
         	
-        	request.setAttribute("addTaskSuccess", task.getTaskName()+"Task Added Successfully!");
+        	request.setAttribute("success", task.getTaskName()+" Task Added Successfully!");
 			
 			rd = request.getRequestDispatcher("TaskServlet");
-        }
+        }	
         catch(ServiceException e) {
         	
         	System.out.println(e.getMessage());
         	e.printStackTrace();
         	
-		    request.setAttribute("addTaskError", e.getMessage());
+		    request.setAttribute("error", e.getMessage());
 			
 			rd = request.getRequestDispatcher("TaskServlet");
             

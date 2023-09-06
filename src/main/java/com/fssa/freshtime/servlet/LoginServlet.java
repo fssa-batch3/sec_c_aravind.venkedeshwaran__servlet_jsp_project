@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import com.fssa.freshtime.exceptions.DAOException;
 import com.fssa.freshtime.exceptions.InvalidInputException;
+import com.fssa.freshtime.exceptions.ServiceException;
 import com.fssa.freshtime.services.UserService;
 
 /**
@@ -21,51 +22,55 @@ import com.fssa.freshtime.services.UserService;
  */
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
-    
+
 	private static final long serialVersionUID = 1L;
 	UserService userservice = new UserService();
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+
+		RequestDispatcher rd = null;
+
+		String emailIdLogin = request.getParameter("emaillogin");
+		String passwordLogin = request.getParameter("passwordlogin");
+
+		try {
+			// Validate and check user in the database
+			boolean isLogedIn = userservice.userLogin(emailIdLogin, passwordLogin);
+
+			if(isLogedIn) {
+
+				HttpSession session = request.getSession();
+				session.setAttribute("Logedinemail", emailIdLogin);
+
 	
+				request.setAttribute("loginSuccess", "Logged In Success");
+	
+	
+				rd = request.getRequestDispatcher("ProfileServlet");
+			}
+			else {
+				request.setAttribute("invalidCredentials", "Invalid Credentials: email or password is wrong");
+				rd = request.getRequestDispatcher("/signup.jsp");
+			}
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
 
-        PrintWriter out = response.getWriter();
-        
-        RequestDispatcher rd = null;
+		} catch (ServiceException e) {
 
-        String emailIdLogin = request.getParameter("emaillogin");
-        String passwordLogin = request.getParameter("passwordlogin");
-
-        try {
-            // Validate and check user in the database
-            userservice.userLogin(emailIdLogin, passwordLogin);
-            
-//			store data in session
-			HttpSession session = request.getSession();
-			session.setAttribute("Logedinemail", emailIdLogin);
-			session.setAttribute("Logedinpassword", passwordLogin);
-			
-			request.setAttribute("loginSuccess", "Logged In Success");
-			
-			rd = request.getRequestDispatcher("TaskServlet");
-			
-			
-            
-        } 
-        catch (InvalidInputException | DAOException | SQLException e) {
-        	
-        	System.out.println(e.getMessage());
+			System.out.println(e.getMessage());
 
 			e.printStackTrace();
-			
+
 			request.setAttribute("loginError", e.getMessage());
-			
+
+
 			rd = request.getRequestDispatcher("/signup.jsp");
-            
-        }
-        finally {
-        	 
-        	rd.forward(request, response);
-        }
-    }
+
+		} finally {
+
+			rd.forward(request, response);
+
+		}
+	}
 }

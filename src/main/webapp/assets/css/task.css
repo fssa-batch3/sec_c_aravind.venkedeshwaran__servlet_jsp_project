@@ -12,12 +12,10 @@
     font-family: 'Ubuntu';
     /* position: fixed; */
 }
-body{
-    min-height: 100vh;
-    background-color: var(--body-color);
-    transition: var(--tran-05);
-    position: fixed;
+.main{
+	position: fixed;
 }
+
 .taskpage{
     display: flex;
 }
@@ -37,19 +35,6 @@ body{
     
     margin-right: 40px;
     
-}
-.logosection{
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
-}
-.logoimg{
-    width: 60px;
-    height: 50px;
-}
-.logosection p{
-    font-weight: 900;
-    font-size:26px;
 }
 .weeklyheader{
     display: flex;
@@ -103,6 +88,15 @@ body{
     font-size: 40px;
     font-weight: 700;
 }
+
+.totalTask{
+	margin-top: 20px;
+	font-size: 32px;
+    font-weight: 700;
+}
+#tottask{
+	color: #0083ff;
+}
 #date{
     font-size: 36px;
     color: var(--primaycolor);
@@ -134,17 +128,17 @@ body{
     display: flex;
     margin-top: 25px;
     width: 700px;
-    background-color: var(--primaycolor);
-    color: var(--bgcolor);
+    background-color: #f3f8fb;
+    color: black;
     padding: 20px;
     border-radius: 20px;
     text-align: center;
     align-items: center;
+    text-decoration: none;
 }
-#nametask{
-    font-weight: 900;
+.taskli:hover{
+	background-color: #f7f7f7;
 }
-
 .fa-check{
     color: black;
     position: relative;
@@ -442,4 +436,45 @@ body{
   border: 3px solid #434343;
   border-radius: 6px;
   transition: all 0.375s;
+}
+
+#redcircle, #yellowcircle, #greencircle{
+	width: 15px;
+	position: fixed;
+	left: 775px
+}
+
+
+.not-started {
+    background-color: orange;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+.scheduled{
+	background-color: blue;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+	
+.in-progress {
+    background-color: #52acf5;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.completed {
+    background-color: green;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.overdue {
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
 }

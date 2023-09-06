@@ -12,25 +12,25 @@ aside {
   display: flex;
   margin-top: 35px;
   margin-bottom: 50px;
+  margin-left: -80px;
 }
 
 .logoSection a {
   text-decoration: none;
-  color: #000; /* Text color for the link */
   display: flex;
-  align-items: center; /* Vertically center align children */
-  margin-right: 10px; /* Add some spacing between image and text */
+  align-items: center;
   color: white;
 }
 
-.logoSection img {
+#freshtimeLogo {
   width: 35px;
+  height: 35px;
   margin-right: 10px;
   margin-top: 10px;
 }
   
   
-  aside a {
+aside a {
     font-size: 24px;
     color: #fff;
     display: block;
@@ -38,7 +38,7 @@ aside {
     padding-left: 30px;
     text-decoration: none;
     -webkit-tap-highlight-color:transparent;
-  }
+}
   
   aside a:hover {
     color: #3f5efb;

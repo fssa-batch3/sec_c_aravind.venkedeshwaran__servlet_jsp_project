@@ -51,25 +51,53 @@
 
 <body>
 
+
+<!-- Sign Up Alerts -->
 	<%
 	String successSignUpMsg = (String) request.getAttribute("successSignUpMsg");
 	String errorSignUpMsg = (String) request.getAttribute("errorSignUpMsg");
 	%>
 
 
-	<%if (errorSignUpMsg != null) {%>
-		<script>
+	<%
+	if (errorSignUpMsg != null) {
+	%>
+	<script>
 		    let errorSignUpMsg = "<%=errorSignUpMsg%>";
 		    Notify.error(errorSignUpMsg);
 		</script>
-	<%}%>
+	<%
+	}
+	%>
 
-	<%if (successSignUpMsg != null) {%>
-		<script>
-	    	let successSignUpMsg = "<%=successSignUpMsg%>";
-			Notify.success(successSignUpMsg);
+	<%
+	if (successSignUpMsg != null) {
+	%>
+	<script>
+	    	let successSignUpMsg = "<%=successSignUpMsg%>
+		";
+		Notify.success(successSignUpMsg);
+	</script>
+	<%
+	}
+	%>
+	
+	<!-- LogIn Alerts -->
+	<%
+	String invalidCredentials = (String) request.getAttribute("invalidCredentials");
+	%>
+
+
+	<%
+	if (invalidCredentials != null) {
+	%>
+	<script>
+		    let invalidCredentials = "<%=invalidCredentials%>";
+		    Notify.error(invalidCredentials);
 		</script>
-	<%}%>
+	<%
+	}
+	%>
 
 	<img src="assets/images/signupgif1.gif" alt="Sign up Gif"
 		id="signupgif" width="600px">

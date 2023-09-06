@@ -35,7 +35,7 @@ public class DeleteTaskServlet extends HttpServlet {
 		try {
 			taskservice.deleteTask(taskId);
 			
-			request.setAttribute("delTaskSuccess", "Task Deleted Successfully!");
+			request.setAttribute("success", "Task Deleted Successfully!");
 			
 			rd = request.getRequestDispatcher("TaskServlet");
         }
@@ -43,7 +43,7 @@ public class DeleteTaskServlet extends HttpServlet {
         	System.out.println(e.getMessage());
         	e.printStackTrace();
         	
-        	request.setAttribute("delTaskError", e.getMessage());
+        	request.setAttribute("error", e.getMessage());
 			
 			rd = request.getRequestDispatcher("TaskServlet");
         }

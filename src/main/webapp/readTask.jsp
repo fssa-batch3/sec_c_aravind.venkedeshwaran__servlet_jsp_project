@@ -4,6 +4,9 @@
 
 <%@ page import="com.fssa.freshtime.models.Task"%>
 <%@ page import="org.json.JSONString"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.time.LocalDate"%>
+<%@ page import="java.time.format.DateTimeFormatter"%>
 <%@ page import="java.util.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -51,110 +54,56 @@
 <link rel="stylesheet" href="assets/css/notify.css">
 <script
 	src="https://cdn.jsdelivr.net/gh/suryaumapathy2812/notify__js/notify.js">
-	
 </script>
 
 
 </head>
 <body>
-
-<!-- Login in alert -->
-	<%
-	String loginSuccess = (String) request.getAttribute("loginSuccess");
-	String loginError = (String) request.getAttribute("loginError");
-	%>
-
-
-	<%if (loginError != null) {%>
-		<script>
-		    let loginError = "<%=loginError%>";
-		    Notify.error(loginError);
-		</script>
-	<%}%>
-
-	<%if (loginSuccess != null) {%>
-		<script>
-	    	let loginSuccess = "<%=loginSuccess%>";
-			Notify.success(loginSuccess);
-		</script>
-	<%}%>
-	
-	
-<!-- Add Task Alert -->
-
-	<%
-	String addTaskSuccess = (String) request.getAttribute("addTaskSuccess");
-	String addTaskError = (String) request.getAttribute("addTaskError");
-	%>
-
-
-	<%if (addTaskError != null) {%>
-		<script>
-		    let addTaskError = "<%=addTaskError%>";
-		    Notify.error(addTaskError);
-		</script>
-	<%}%>
-
-	<%if (addTaskSuccess != null) {%>
-		<script>
-	    	let addTaskSuccess = "<%=addTaskSuccess%>";
-			Notify.success(addTaskSuccess);
-		</script>
-	<%}%>
-	
-<!-- Updated Task Alert -->
-
-	<%
-	String updateSuccess = (String) request.getAttribute("updateSuccess");
-	String updateError = (String) request.getAttribute("updateError");
-	%>
-
-
-	<%if (updateError != null) {%>
-		<script>
-		    let updateError = "<%=updateError%>";
-		    Notify.error(updateError);
-		</script>
-	<%}%>
-
-	<%if (updateSuccess != null) {%>
-		<script>
-	    	let updateSuccess = "<%=updateSuccess%>";
-			Notify.success(updateSuccess);
-		</script>
-	<%}%>
-	
-<!-- Delete Task Alert -->
-
-	<%
-	String delTaskSuccess = (String) request.getAttribute("delTaskSuccess");
-	String delTaskError = (String) request.getAttribute("delTaskError");
-	%>
-
-
-	<%if (delTaskError != null) {%>
-		<script>
-		    let delTaskError = "<%=delTaskError%>";
-		    Notify.error(delTaskError);
-		</script>
-	<%}%>
-
-	<%if (delTaskSuccess != null) {%>
-		<script>
-	    	let delTaskSuccess = "<%=delTaskSuccess%>";
-			Notify.success(delTaskSuccess);
-		</script>
-	<%}%>
-
 	<div class="main">
 		<div class="taskpage">
 
-			<script type="text/javascript" src="assets/js/sidebar.js"></script>
+			<jsp:include page="sidebar.jsp"></jsp:include>
 
+			<!-- Add Task Alert -->
+			<%
+				String success = (String) request.getAttribute("success");
+				String error = (String) request.getAttribute("error");
+			%>
+
+
+			<%
+				if (error != null) {
+			%>
+			<script>
+			    let error = "<%=error%>";
+			    Notify.error(error);
+			</script>
+			<%
+				}
+			%>
+
+			<%
+				if (success != null) {
+			%>
+			<script>
+	    		let success = "<%=success%>";
+				Notify.success(success);
+			</script>
+			<%
+				}
+			%>
+
+			<%
+			List<Task> listTask = (List<Task>) request.getAttribute("listTask");
+			%>
 			<div class="dailycol">
 				<div class="dailyheader">
 					<div>
 						<p class="Todayschedule">Today's Schedule</p>
+						<p class="totalTask">
+							You've Got <span id="tottask"><%=listTask.size()%> Task</span> To
+							Do
+						</p>
 						<div class="datentime">
 							<p id="date"></p>
 							<p id="timenow"></p>
@@ -168,7 +117,6 @@
 				<div id="tasklist">
 
 					<%
-					List<Task> listTask = (List<Task>) request.getAttribute("listTask");
 					if (listTask != null) {
 						for (Task task : listTask) {
 					%>
@@ -177,10 +125,71 @@
 						href="<%=request.getContextPath()%>/TaskServlet?action=edit&taskId=<%=task.getTaskId()%>">
 						<label> <input type="checkbox" /> <span class="checkbox"></span>
 					</label>
-						<p><%=task != null ? task.getTaskName() : ""%></p>
-						<p><%=task != null ? task.getPriority() : ""%></p>
-						<p><%=task != null ? task.getStatus() : ""%></p>
-						<p><%=task != null ? task.getDueDate() : ""%></p>
+						<p><%=task != null ? task.getTaskName() : ""%></p> <%
+ if (task != null) {
+ 	LocalDate dueDate = task.getDueDate();
+ 	LocalDate today = LocalDate.now();
+ 	LocalDate yesterday = today.minusDays(1);
+ 	LocalDate tomorrow = today.plusDays(1);
+
+ 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+ 	if (dueDate.equals(today)) {
+ %>
+						<p>Today</p> <%
+ } else if (dueDate.equals(yesterday)) {
+ %>
+						<p>Yesterday</p> <%
+ } else if (dueDate.equals(tomorrow)) {
+ %>
+						<p>Tomorrow</p> <%
+ } else {
+ %>
+						<p><%=dueDate.format(formatter)%></p> <%
+ }
+ }
+ %> <%
+ String priority = task.getPriority().toString();
+
+ if ("LOW".equalsIgnoreCase(priority)) {
+ %> <img src="assets/images/greencircle.png" alt="green circle"
+						id="greencircle">
+						<p><%=priority%></p> <%
+ } else if ("MEDIUM".equalsIgnoreCase(priority)) {
+ %> <img src="assets/images/yellowcircle.png" alt="yellow circle"
+						id="yellowcircle">
+						<p>MID</p> <%
+ } else if ("HIGH".equalsIgnoreCase(priority)) {
+ %> <img src="assets/images/redcircle.png" alt="red circle"
+						id="redcircle">
+						<p><%=priority%></p> <%
+ } else {
+ %> <%=priority%> <%
+ }
+ %> <%
+ String status = task.getStatus().toString();
+
+ if ("NOTSTARTED".equalsIgnoreCase(status)) {
+ %>
+						<p class="not-started">Not Started</p> <%
+ } else if ("SCHEDULED".equalsIgnoreCase(status)) {
+ %>
+						<p class="scheduled">Scheduled</p> <%
+ } else if ("INPROGRESS".equalsIgnoreCase(status)) {
+ %>
+						<p class="in-progress">In Progress</p> <%
+ } else if ("COMPLETED".equalsIgnoreCase(status)) {
+ %>
+						<p class="completed">Completed</p> <%
+ } else if ("OVERDUE".equalsIgnoreCase(status)) {
+ %>
+						<p class="overdue">Overdue</p> <%
+ } else {
+ %>
+						<p><%=status%></p> <%
+ }
+ %>
+
 
 					</a>
 					<%
@@ -293,7 +302,7 @@
 					value="<%=(uptTask != null) ? uptTask.getPriority() : ""%>">
 					<option value="HIGH">High Priority</option>
 					<option value="MEDIUM">Mid Priority</option>
-					<option value="LESS">Less Priority</option>
+					<option value="LOW">Low Priority</option>
 				</select> <br> <label for="status" id="statuslabel"><i
 					class="fa fa-warning"></i> Status</label> <select name="status" id="status"
 					value="<%=(uptTask != null) ? uptTask.getStatus() : ""%>">
@@ -315,6 +324,7 @@
 
 
 				<p id="cancel">Cancel</p>
+
 				<button type="submit" id="savetask" onclick="setFormAction('save')">Save</button>
 				<button type="submit" id="updatetask"
 					onclick="setFormAction('update')">Update</button>

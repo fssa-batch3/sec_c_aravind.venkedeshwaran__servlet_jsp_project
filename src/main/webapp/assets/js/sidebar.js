@@ -82,7 +82,7 @@ asideElement.appendChild(notesLink);
 asideElement.appendChild(profileLink);
 
 // Add the aside element to the main container div with the class "main"
-const mainDiv = document.querySelector(".taskpage");
+const mainDiv = document.querySelector(".main");
 // document.body.appendChild(asideElement);
 mainDiv.appendChild(asideElement);
 

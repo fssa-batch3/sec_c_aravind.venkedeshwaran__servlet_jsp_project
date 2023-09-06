@@ -13,10 +13,21 @@
   	<description></description>
   	<servlet-class>com.fssa.freshtime.servlet.addtask</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>UpdateProfileServlet</servlet-name>
+  	<display-name>UpdateProfileServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.fssa.freshtime.servlet.UpdateProfileServlet</servlet-class>
+  </servlet>
+
   
   <servlet-mapping>
   	<servlet-name>addtask</servlet-name>
   	<url-pattern>/addtask</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UpdateProfileServlet</servlet-name>
+  	<url-pattern>/UpdateProfileServlet</url-pattern>
   </servlet-mapping>
 
   

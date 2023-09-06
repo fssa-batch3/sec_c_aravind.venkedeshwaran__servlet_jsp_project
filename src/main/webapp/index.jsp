@@ -31,9 +31,43 @@
 	
 </script>
 
+<link rel="stylesheet" href="assets/css/notify.css">
+<script
+	src="https://cdn.jsdelivr.net/gh/suryaumapathy2812/notify__js/notify.js">
+</script>
+
 </head>
 
 <body>
+
+<!-- Notify Alert -->
+	<%
+	String success = (String) request.getAttribute("success");
+	String error = (String) request.getAttribute("error");
+	%>
+
+
+	<%
+	if (error != null) {
+	%>
+	<script>
+		    let error = "<%=error%>";
+		    Notify.error(error);
+		</script>
+	<%
+	}
+	%>
+
+	<%
+	if (success != null) {
+	%>
+	<script>
+	    	let success = "<%=success%>";
+			Notify.success(success);
+		</script>
+	<%
+	}
+	%>
 	<!-- nav bar starts -->
 	<header>
 		<div class="header">

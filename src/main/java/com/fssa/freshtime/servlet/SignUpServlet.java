@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fssa.freshtime.exceptions.DAOException;
 import com.fssa.freshtime.exceptions.InvalidInputException;
+import com.fssa.freshtime.exceptions.ServiceException;
 import com.fssa.freshtime.models.User;
 import com.fssa.freshtime.services.UserService;
 
@@ -23,9 +24,8 @@ public class SignUpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	UserService userservice = new UserService();
-	
-	RequestDispatcher rd = null;
 
+	RequestDispatcher rd = null;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -36,7 +36,6 @@ public class SignUpServlet extends HttpServlet {
 		String username = (String) request.getParameter("username");
 		String emailId = (String) request.getParameter("emailId");
 		String password = (String) request.getParameter("password");
-		
 
 //		set the attribute in the user object
 		User user = new User();
@@ -48,28 +47,25 @@ public class SignUpServlet extends HttpServlet {
 
 //			validate the attributes 
 			userservice.userSignUp(user);
-			
+
 			request.setAttribute("successSignUpMsg", "Signed Up Successfully!");
-			
-			rd = request.getRequestDispatcher("signup.jsp");
 
-		    
+			rd = request.getRequestDispatcher("/signup.jsp");
 
-		} catch (InvalidInputException | DAOException e) {
-			
+		} catch (ServiceException e) {
+
 			request.setAttribute("errorSignUpMsg", e.getMessage());
-			
-			rd = request.getRequestDispatcher("/signup.jsp");		
+
+			rd = request.getRequestDispatcher("/signup.jsp");
 			// response.sendRedirect("/signup.jsp");
-			
+
 			System.out.println(e.getMessage());
 
 			e.printStackTrace();
-		}
-		finally {
-       	 
+		} finally {
+
 			rd.forward(request, response);
-        }
+		}
 
 	}
 
