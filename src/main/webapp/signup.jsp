@@ -54,50 +54,34 @@
 
 <!-- Sign Up Alerts -->
 	<%
-	String successSignUpMsg = (String) request.getAttribute("successSignUpMsg");
-	String errorSignUpMsg = (String) request.getAttribute("errorSignUpMsg");
+	String success = (String) request.getAttribute("success");
+	String error = (String) request.getAttribute("error");
 	%>
 
 
 	<%
-	if (errorSignUpMsg != null) {
+	if (error != null) {
 	%>
 	<script>
-		    let errorSignUpMsg = "<%=errorSignUpMsg%>";
-		    Notify.error(errorSignUpMsg);
+		    let error = "<%=error%>";
+		    Notify.error(error);
 		</script>
 	<%
 	}
 	%>
 
 	<%
-	if (successSignUpMsg != null) {
+	if (success != null) {
 	%>
 	<script>
-	    	let successSignUpMsg = "<%=successSignUpMsg%>
-		";
-		Notify.success(successSignUpMsg);
+	    let success = "<%=success%>";
+		Notify.success(success);
 	</script>
 	<%
 	}
 	%>
 	
-	<!-- LogIn Alerts -->
-	<%
-	String invalidCredentials = (String) request.getAttribute("invalidCredentials");
-	%>
 
-
-	<%
-	if (invalidCredentials != null) {
-	%>
-	<script>
-		    let invalidCredentials = "<%=invalidCredentials%>";
-		    Notify.error(invalidCredentials);
-		</script>
-	<%
-	}
-	%>
 
 	<img src="assets/images/signupgif1.gif" alt="Sign up Gif"
 		id="signupgif" width="600px">

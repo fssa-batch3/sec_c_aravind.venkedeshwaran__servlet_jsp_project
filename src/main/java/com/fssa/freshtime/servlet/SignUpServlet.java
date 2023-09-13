@@ -48,13 +48,13 @@ public class SignUpServlet extends HttpServlet {
 //			validate the attributes 
 			userservice.userSignUp(user);
 
-			request.setAttribute("successSignUpMsg", "Signed Up Successfully!");
+			request.setAttribute("success", "Signed Up Successfully!");
 
 			rd = request.getRequestDispatcher("/signup.jsp");
 
 		} catch (ServiceException e) {
 
-			request.setAttribute("errorSignUpMsg", e.getMessage());
+			request.setAttribute("error", e.getMessage());
 
 			rd = request.getRequestDispatcher("/signup.jsp");
 			// response.sendRedirect("/signup.jsp");

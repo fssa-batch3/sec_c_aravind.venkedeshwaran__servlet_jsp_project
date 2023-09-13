@@ -8,8 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.fssa.freshtime.dao.UserDAO;
-import com.fssa.freshtime.exceptions.DAOException;
+
 import com.fssa.freshtime.exceptions.ServiceException;
 import com.fssa.freshtime.models.User;
 import com.fssa.freshtime.services.UserService;
@@ -38,6 +37,10 @@ public class ProfileServlet extends HttpServlet {
 	                session.setAttribute("username", user.getUserName());
 	                
 	                request.setAttribute("user", user);
+	                
+//	                String success = (String) request.getAttribute("success");
+	                
+	                request.setAttribute("success", "Logged In Success");
 	                    
 	                request.getRequestDispatcher("/profile.jsp").forward(request, response);
 	                

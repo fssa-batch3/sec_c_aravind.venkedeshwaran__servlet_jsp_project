@@ -66,31 +66,31 @@
 
 			<!-- Add Task Alert -->
 			<%
-				String success = (String) request.getAttribute("success");
-				String error = (String) request.getAttribute("error");
+			String success = (String) request.getAttribute("success");
+			String error = (String) request.getAttribute("error");
 			%>
 
 
 			<%
-				if (error != null) {
+			if (error != null) {
 			%>
 			<script>
 			    let error = "<%=error%>";
 			    Notify.error(error);
 			</script>
 			<%
-				}
+			}
 			%>
 
 			<%
-				if (success != null) {
+			if (success != null) {
 			%>
 			<script>
 	    		let success = "<%=success%>";
 				Notify.success(success);
 			</script>
 			<%
-				}
+			}
 			%>
 
 			<%
@@ -126,69 +126,69 @@
 						<label> <input type="checkbox" /> <span class="checkbox"></span>
 					</label>
 						<p><%=task != null ? task.getTaskName() : ""%></p> <%
- if (task != null) {
- 	LocalDate dueDate = task.getDueDate();
- 	LocalDate today = LocalDate.now();
- 	LocalDate yesterday = today.minusDays(1);
- 	LocalDate tomorrow = today.plusDays(1);
-
- 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
- 	if (dueDate.equals(today)) {
- %>
+				 if (task != null) {
+								 	LocalDate dueDate = task.getDueDate();
+				 	LocalDate today = LocalDate.now();
+				 	LocalDate yesterday = today.minusDays(1);
+				 	LocalDate tomorrow = today.plusDays(1);
+				
+				 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				
+				 	if (dueDate.equals(today)) {
+				 	%>
 						<p>Today</p> <%
- } else if (dueDate.equals(yesterday)) {
- %>
+				 	} else if (dueDate.equals(yesterday)) {
+				 	%>
 						<p>Yesterday</p> <%
- } else if (dueDate.equals(tomorrow)) {
- %>
+				 	} else if (dueDate.equals(tomorrow)) {
+				 	%>
 						<p>Tomorrow</p> <%
- } else {
- %>
+				 	} else {
+				 	%>
 						<p><%=dueDate.format(formatter)%></p> <%
- }
- }
- %> <%
- String priority = task.getPriority().toString();
-
- if ("LOW".equalsIgnoreCase(priority)) {
- %> <img src="assets/images/greencircle.png" alt="green circle"
-						id="greencircle">
-						<p><%=priority%></p> <%
- } else if ("MEDIUM".equalsIgnoreCase(priority)) {
- %> <img src="assets/images/yellowcircle.png" alt="yellow circle"
-						id="yellowcircle">
-						<p>MID</p> <%
- } else if ("HIGH".equalsIgnoreCase(priority)) {
- %> <img src="assets/images/redcircle.png" alt="red circle"
-						id="redcircle">
-						<p><%=priority%></p> <%
- } else {
- %> <%=priority%> <%
- }
- %> <%
- String status = task.getStatus().toString();
-
- if ("NOTSTARTED".equalsIgnoreCase(status)) {
- %>
-						<p class="not-started">Not Started</p> <%
- } else if ("SCHEDULED".equalsIgnoreCase(status)) {
- %>
-						<p class="scheduled">Scheduled</p> <%
- } else if ("INPROGRESS".equalsIgnoreCase(status)) {
- %>
-						<p class="in-progress">In Progress</p> <%
- } else if ("COMPLETED".equalsIgnoreCase(status)) {
- %>
-						<p class="completed">Completed</p> <%
- } else if ("OVERDUE".equalsIgnoreCase(status)) {
- %>
-						<p class="overdue">Overdue</p> <%
- } else {
- %>
-						<p><%=status%></p> <%
- }
- %>
+				 	}
+				 	}
+				 	%> <%
+				 String priority = task.getPriority().toString();
+				
+				 if ("LOW".equalsIgnoreCase(priority)) {
+				 %> <img src="assets/images/greencircle.png" alt="green circle"
+										id="greencircle">
+					<p><%=priority%></p> <%
+				 } else if ("MEDIUM".equalsIgnoreCase(priority)) {
+				 %> <img src="assets/images/yellowcircle.png" alt="yellow circle"
+										id="yellowcircle">
+										<p>MID</p> <%
+				 } else if ("HIGH".equalsIgnoreCase(priority)) {
+				 %> <img src="assets/images/redcircle.png" alt="red circle"
+										id="redcircle">
+										<p><%=priority%></p> <%
+				 } else {
+				 %> <%=priority%> <%
+				 }
+				 %> <%
+				 String status = task.getStatus().toString();
+				
+				 if ("NOTSTARTED".equalsIgnoreCase(status)) {
+				 %>
+										<p class="not-started">Not Started</p> <%
+				 } else if ("SCHEDULED".equalsIgnoreCase(status)) {
+				 %>
+										<p class="scheduled">Scheduled</p> <%
+				 } else if ("INPROGRESS".equalsIgnoreCase(status)) {
+				 %>
+										<p class="in-progress">In Progress</p> <%
+				 } else if ("COMPLETED".equalsIgnoreCase(status)) {
+				 %>
+										<p class="completed">Completed</p> <%
+				 } else if ("OVERDUE".equalsIgnoreCase(status)) {
+				 %>
+										<p class="overdue">Overdue</p> <%
+				 } else {
+				 %>
+										<p><%=status%></p> <%
+				 }
+				 %>
 
 
 					</a>
@@ -208,7 +208,7 @@
 			<div class="taskaddcol">
 				<div class="profilesection">
 					<div class="nameset">
-						<p id="username">Aravind</p>
+						<p id="username"><%=(String) session.getAttribute("username")%></p>
 						<P id="setting">My Settings</P>
 					</div>
 					<img src="assets/images/profile.jpg" alt="">
@@ -273,7 +273,7 @@
 					<p></p>
 				</div>
 				<div>
-					<h3 class="taskheading">Add Habit</h3>
+					<h3 class="taskheading">Add Task</h3>
 					<p class="taskquote">Tackle your goals in daily doses</p>
 				</div>
 			</div>
@@ -288,22 +288,36 @@
 
 				<input type="text" id="taskname" name="taskname"
 					value="<%=(uptTask != null) ? uptTask.getTaskName() : ""%>"
-					placeholder="Add Task" required> <br> <input
+					placeholder="Add Task" required> 
+					
+					<br> 
+					
+					<input
 					name="taskdescription" type="text" id="taskdescription"
 					placeholder="Add Description"
 					value="<%=(uptTask != null) ? uptTask.getDescription() : ""%>"
-					required> <br> <label for="duedate" id="duedatelabel"><i
+					required> <br> 
+					
+					<label for="duedate" id="duedatelabel"><i
 					class='far fa-calendar-check'></i> Due Date</label> <input name="duedate"
-					type="date" id="duedate"
+					type="date" id="duedate" min="<%=LocalDate.now()%>
 					value="<%=(uptTask != null) ? uptTask.getDueDate() : ""%>">
-				<br> <label for="priority" id="prioritylabel"><i
-					class="fa fa-warning"></i> Priority</label> <select name="priority"
+					<br> 
+					
+					<label for="priority" id="prioritylabel"><i
+					class="fa fa-warning"></i> Priority</label> 
+					
+					<select name="priority"
 					id="priority"
 					value="<%=(uptTask != null) ? uptTask.getPriority() : ""%>">
 					<option value="HIGH">High Priority</option>
 					<option value="MEDIUM">Mid Priority</option>
 					<option value="LOW">Low Priority</option>
-				</select> <br> <label for="status" id="statuslabel"><i
+					</select> 
+					
+					<br> 
+					
+					<label for="status" id="statuslabel"><i
 					class="fa fa-warning"></i> Status</label> <select name="status" id="status"
 					value="<%=(uptTask != null) ? uptTask.getStatus() : ""%>">
 					<option value="NOTSTARTED">Not Started</option>
@@ -311,11 +325,15 @@
 					<option value="INPROGRESS">In Progress</option>
 					<option value="COMPLETED">Completed</option>
 					<option value="OVERDUE">Overdue</option>
-				</select> <br> <label for="reminder" id="reminderlabel"><i
+					</select> 
+					
+					<br> 
+					
+					<label for="reminder" id="reminderlabel"><i
 					class='far fa-calendar-check'></i> Reminder: </label> <input
-					name="reminder" type="datetime-local" id="reminder"
+					name="reminder" type="datetime-local" id="reminder" min="<%=LocalDate.now()%>
 					value="<%=(uptTask != null) ? uptTask.getReminder() : ""%>">
-				<br>
+					<br>
 
 				<h3 id="notesh3">Notes:</h3>
 				<textarea name="notes" placeholder="Insert Your Notes Here"
