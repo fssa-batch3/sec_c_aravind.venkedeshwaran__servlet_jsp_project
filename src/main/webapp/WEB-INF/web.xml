@@ -19,6 +19,37 @@
   	<description></description>
   	<servlet-class>com.fssa.freshtime.servlet.UpdateProfileServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>NotesServlet</servlet-name>
+  	<display-name>NotesServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.fssa.freshtime.servlet.NotesServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>UpdateNoteServlet</servlet-name>
+  	<display-name>UpdateNoteServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.fssa.freshtime.servlet.UpdateNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>AddSubtaskServlet</servlet-name>
+  	<display-name>AddSubtaskServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.fssa.freshtime.servlet.AddSubtaskServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>UpdateSubtaskServlet</servlet-name>
+  	<display-name>UpdateSubtaskServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.fssa.freshtime.servlet.UpdateSubtaskServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>DeleteSubtaskServlet</servlet-name>
+  	<display-name>DeleteSubtaskServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.fssa.freshtime.servlet.DeleteSubtaskServlet</servlet-class>
+  </servlet>
+
 
   
   <servlet-mapping>
@@ -29,7 +60,37 @@
   	<servlet-name>UpdateProfileServlet</servlet-name>
   	<url-pattern>/UpdateProfileServlet</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>NotesServlet</servlet-name>
+  	<url-pattern>/NotesServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UpdateNoteServlet</servlet-name>
+  	<url-pattern>/UpdateNoteServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AddSubtaskServlet</servlet-name>
+  	<url-pattern>/AddSubtaskServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UpdateSubtaskServlet</servlet-name>
+  	<url-pattern>/UpdateSubtaskServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>DeleteSubtaskServlet</servlet-name>
+  	<url-pattern>/DeleteSubtaskServlet</url-pattern>
+  </servlet-mapping>
 
-  
+
+  <error-page>
+		<error-code>404</error-code> <!-- HTTP Error code Page Not found -->
+		<location>/404error.jsp</location>
+  </error-page>
+	
+	
+  <error-page>
+		<error-code>500</error-code> <!-- HTTP Error code Page Not found -->
+		<location>/500error.jsp</location>
+	</error-page>
   
 </web-app>

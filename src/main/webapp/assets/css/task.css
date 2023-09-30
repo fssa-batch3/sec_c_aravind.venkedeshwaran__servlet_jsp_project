@@ -10,7 +10,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Ubuntu';
-    /* position: fixed; */
 }
 .main{
 	position: fixed;
@@ -19,71 +18,26 @@
 .taskpage{
     display: flex;
 }
-.taskaddcol{
+
+.taskcol{
+    padding-left: 80px;
+    width: 800px;
+    height: 100vh;
+    margin-right: 40px;
+    overflow-y: scroll;
+}
+
+.profilecol{
     width: 400px;
     height: 100vh;
     background-color: var(--bgcolor);
     padding: 15px;
-    margin-right: 40px;
+    margin-right: 90px;
     border-radius: 30px ;
-}
-.dailycol{
-    padding-left: 80px;
-    width: 800px;
-    height: 100vh;
-    background-color: var(--bgcolor);
-    
-    margin-right: 40px;
+    padding: 30px;
     
 }
-.weeklyheader{
-    display: flex;
-    justify-content: space-between;
-    font-size: var(--subfont);
-    margin-bottom: 30px;
-    margin-top: 60px;
-}
-#viewall{
-    color: var(--primaycolor);
-    font-weight: 700;
-    font-size:  16px;
-}
-.weeklygoal{
-    width: 300px;
-}
-.goalcard{
-    width: 280px;
-    background-color: white;
-    padding: 10px;
-    border-radius: 15px;
-    /* border: 1px solid black; */
-}
-.goaldiv{
-    display: flex;
-}
-#weeklygoalemoji{
-    width: 40px;
-    height: 40px;
-    /* margin: 20px; */
-    /* background-color: var(--primaycolor); */
-    z-index: 1;
-}
-#goaldetails{
-    margin-left: 30px;
-}
-#goal{
-    font-weight: 700;
-    font-size: 20px;
-}
-.additionaldetails{
-    margin-left: 60px;
-    margin-top: 20px;
-}
-.monthlycalendar img{
-    width: 300px;
-    height: 400px;
-    margin-top: 50px;
-}
+
 .Todayschedule{
     font-size: 40px;
     font-weight: 700;
@@ -97,6 +51,10 @@
 #tottask{
 	color: #0083ff;
 }
+
+#taskandsubtask{
+	margin-top: 50px;
+}
 #date{
     font-size: 36px;
     color: var(--primaycolor);
@@ -104,13 +62,15 @@
     margin-top: 10px;
 }
 #addtaskplus{
-    height: 50px;
-    width: 50px;
+height: 40px;
+    width: 40px;
     background-color: var(--primaycolor);
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70% ;
-    position: absolute;
-    top: 25px;
-    left: 987px;
+    border-radius: 30px;
+    position: relative;
+    left: 600px;
+    top: 275px;
+    color: white;
+    border: none;
 }
 .fa-plus{
     position: absolute;
@@ -119,65 +79,111 @@
     font-size: 22px;
     color: white;
 }
-#tasklist{
-    margin-top: 90px;
-    list-style: none;
+
+
+.toggle-chevron{
+	cursor: pointer;
 }
-.taskli{
-    /* list-style: none; */
-    display: flex;
+
+.subtasklist{
+	display: none;
+	margin-left: 30px;
+}
+
+.taskli, .subtaskli{
+	display: flex;
     margin-top: 25px;
     width: 700px;
     background-color: #f3f8fb;
     color: black;
-    padding: 20px;
     border-radius: 20px;
-    text-align: center;
-    align-items: center;
     text-decoration: none;
+    padding: 20px;
+	text-align: center;
+    align-items: center;
 }
-.taskli:hover{
+
+.taskli:hover,.subtaskli:hover{
 	background-color: #f7f7f7;
 }
-.fa-check{
-    color: black;
-    position: relative;
-    left: -60px;
-    font-size: 22px;
-}
-.taskli p:nth-of-type(1){
+
+.taskName, .subtaskName {
   width: 300px;
   margin-left: 20px;
   word-wrap:break-word;
   font-weight: 700;
   text-align: left;
   text-decoration: none;
+  color: black;
 }
 
-.taskli p:nth-of-type(2),.taskli p:nth-of-type(3){
+.taskPriority, .subtaskDueDate, .subtaskpriority{
   padding: 5px;
   width: 130px;
   height: 30px;
   border-radius: 30px;
   text-align: center;
-  position: fixed;
-  left: 640px;
+  position: relative;
 }
-.taskli p:nth-of-type(3){
-    left: 750px;
+.taskPriority{
+    left: 30px;
 }
 
-.taskli p:nth-of-type(4){
-    position: fixed;
-    /* top: 15px; */
-    left: 900px;
+.taskStatus{
+    position: relative;
+    font-weight: bold;
+    left: 10px;
 }
-.taskaddcol{
-    padding: 30px;
+
+#redcircle, #yellowcircle, #greencircle{
+	width: 15px;
+	position: relative;
+	left: 55px
 }
-/* .nameset{
-    margin-left: 20px;
-} */
+
+
+.notstarted {
+    background-color: orange;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+.scheduled{
+	background-color: blue;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+	
+.inprogress {
+    background-color: #52acf5;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.completed {
+    background-color: green;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.overdue {
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+#addsubtask{
+	margin-top: 30px;
+}
+.subtaskName{
+	padding: 8px;
+}
+
+
 #username{
     font-weight: 900;
     font-size: 18px;
@@ -199,28 +205,14 @@
 .music{
     margin-top: 50px;
 }
-.time{
-    margin-top: 60px;
-}
+
 #timenow{
     margin-top: 10px;
     margin-left: 10px;
     font-size: 36px;
     font-weight: 900;
 }
-.temp{
-    display: flex;
-}
-#temptext{
-    font-size: 22px;
-    margin-top: 15px;
-    margin-left: 5px;
-}
-.sun{
-    height: 40px;
-    width: 40px;
-    margin-top: 10px;
-}
+
 .quotes{
     margin-top: 50px;
     margin-left: 20px;
@@ -241,7 +233,6 @@
 /* Add Task Card Style */
 
 .addtaskpopup{
-	
   display: none;
   position: absolute;
   top: 100px;
@@ -263,7 +254,8 @@
 
 .taskheader{
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  
 }
 
 .design p{
@@ -272,11 +264,14 @@
   background-color: rgb(51, 192, 255);;
   border-radius: 30px;
   margin-right: 20px;
+  margin-top: -30px;
 }
 
 .taskheader, .taskheading{
   font-size: 22px;
   margin-top: 10px;
+  font-weight: bold;
+  margin-top: -30px;
 }
 
 .taskquote{
@@ -289,30 +284,31 @@
   outline: none;
   width: 350px;
   padding: 10px;
-  padding-left: 15px;
+  padding-left: 10px;
   border-radius: 5px;
   border: none;
   font-weight: 700;
   color: #424242;
-  
+  margin-top: -10px;
 }
 #taskname:hover, #taskdescription:hover{
 	background-color: #ededed;
 }
-
-#duedatelabel,#prioritylabel,#statuslabel, #reminderlabel{
+#taskdescription{
+	margin-top: 10px;
+}
+#prioritylabel,#statuslabel, #reminderlabel{
 	position: relative;
-	font-size: 22px;
+	font-size: 15px;
+	padding-left: 10px;
 }
 
-#duedatelabel{
-	top:10px;
-}
-#duedate{
+#calensvg{
 	position: relative;
-	top: 10px;
-	left: 20px;
+	top: 28px;
 }
+
+
 
 #prioritylabel{
 	top:20px;
@@ -345,67 +341,68 @@
 	left: 1px;
 }
 
-#notesh3 {
-  margin-top: 60px;
+.notesContainer{
+	box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+	border-radius: 8px;
+	font-size: 16px;
+	margin-top: 0px;
+	padding-left: 10px;
+	height: 200px;
 }
 
-#notes, #notestd {
+.notesHeading{
+	padding-top: 20px;
+}
+
+#notesFeild {
   border: none;
-  font-size: 16px;
-  margin-top: 20px;
-  padding-top: 15px;
-  padding-left: 15px;
-  border: 1px solid lightslategray;
-  border-radius: 5px;
-}
-#cancel,
-#savetask, #updatetask {
-  color: white;
-  border-radius: 5px;
-  padding: 10px 15px;
-  position: absolute;
-  top: 550px;
-  left: 280px;
-  cursor: pointer;
-  border: none;
-  
-
+  outline: none;
+  margin-left: 30px;
 }
 
-#editButton{
-	width:20px;
-	position: fixed;
-	left: 850px;
+#updatetask, #deletebtn{
+	border: none;
+    outline: none;
+	position: relative;
+	top: 10px;
 	cursor: pointer;
+	background-color: red;
+	color: white;
+    padding: 5px;
+    border-radius: 5px;
+    
+}
+
+#updatetask {
+  left: 225px;
 }
 
 #deletebtn{
-	margin-top: -25px;
-	width:20px;
-	position: fixed;
-	left: 885px;
-	cursor: pointer;
+	left: 205px;
 }
 
 #cancel {
-  background-color: black;
-  margin-left: 80px;
+	width: 20px;
+    background-color: #f3f8fb;
+    position: relative;
+    left: 380px;
+    border-radius: 5px;
+    padding: 5px 25px 5px 10px;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
 }
 
 #savetask, #updatetask {
   background-color: #0083FF;
 }
 
-#updatetask{
-	display: none;
-}
 
 
 
+/* CheckBox Style */
 
-
-
-.taskli label {
+.taskli label, .subtaskli label {
   display: block;
   width: 25px;
   height: 25px;
@@ -414,12 +411,12 @@
   left: -70px;
 }
 
-.taskli input {
+.taskli input, .subtaskli input  {
   visibility: hidden;
   display: none;
 }
 
-.taskli input:checked ~ .checkbox {
+.taskli input:checked ~ .checkbox, .subtaskli input:checked ~ .checkbox {
  transform: rotate(45deg);
  width: 14px;
  margin-left: 12px;
@@ -429,7 +426,7 @@
  border-radius: 0;
 }
 
-.taskli .checkbox {
+.taskli .checkbox, .subtaskli .checkbox {
   display: block;
   width: inherit;
   height: inherit;
@@ -438,43 +435,21 @@
   transition: all 0.375s;
 }
 
-#redcircle, #yellowcircle, #greencircle{
-	width: 15px;
-	position: fixed;
-	left: 775px
-}
-
-
-.not-started {
-    background-color: orange;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 15px;
-}
-.scheduled{
-	background-color: blue;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 15px;
-}
-	
-.in-progress {
-    background-color: #52acf5;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 15px;
-}
-
-.completed {
-    background-color: green;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 15px;
-}
-
-.overdue {
-    background-color: red;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 15px;
-}
+#addtaskbar{
+  width: 660px;
+  height: 50px;
+  padding-left: 24px;
+  margin-top: 10px;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  border-radius: 6px;
+  color: #b2b2b2;
+  background-color: var(--bgcolor);
+  font-size: 16px;
+  position: fixed;
+  top: 800px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  }
+  
+ 

@@ -15,8 +15,8 @@ body {
     font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana,
         sans-serif;
     animation-name: fadeOutRight;
-    animation-delay: .5s;
-    animation-duration: 90s;
+    animation-delay: 1s;
+    animation-duration: 5s;
 }
 
 .notify-success {

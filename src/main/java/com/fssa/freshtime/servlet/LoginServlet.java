@@ -10,8 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.fssa.freshtime.exceptions.ServiceException;
+import com.fssa.freshtime.models.User;
 import com.fssa.freshtime.services.UserService;
+import com.fssa.freshtime.utils.Logger;
 
 /**
  * Servlet implementation class LoginServlet
@@ -25,33 +29,40 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+//		RequestDispatcher rd = null;
 
-		RequestDispatcher rd = null;
+		UserService userService = new UserService();
+
+		HttpSession session = request.getSession();
 
 		String emailIdLogin = request.getParameter("emaillogin");
 		String passwordLogin = request.getParameter("passwordlogin");
 
 		try {
-			// Validate and check user in the database
-			boolean isLogedIn = userservice.userLogin(emailIdLogin, passwordLogin);
 
-			if(isLogedIn) {
+			User user = userService.getUserByEmail(emailIdLogin);
+			
 
-				HttpSession session = request.getSession();
-				session.setAttribute("Logedinemail", emailIdLogin);
+			if (BCrypt.checkpw(passwordLogin, user.getPassword())) {
+				
+				session.setAttribute("username", user.getUserName());
 
-	
-				request.setAttribute("loginSuccess", "Logged In Success");
-	
-	
-				rd = request.getRequestDispatcher("ProfileServlet");
+				session.setAttribute("user", user);
 
+				request.setAttribute("success", "Logged In Success");
+
+				RequestDispatcher rd = request.getRequestDispatcher("/profile.jsp");
+				rd.forward(request, response);
+
+				
+			} else {
+				
+				request.setAttribute("error", "Incorrect Password!!!");
+
+				RequestDispatcher rd = request.getRequestDispatcher("/signup.jsp");
+				rd.forward(request, response);
+				
 			}
-			else {
-				request.setAttribute("invalidCredentials", "Invalid Credentials: email or password is wrong");
-				rd = request.getRequestDispatcher("/signup.jsp");
-			}
-
 
 		} catch (ServiceException e) {
 
@@ -59,13 +70,9 @@ public class LoginServlet extends HttpServlet {
 
 			e.printStackTrace();
 
-			request.setAttribute("loginError", e.getMessage());
+			request.setAttribute("error", e.getMessage());
 
-
-			rd = request.getRequestDispatcher("/signup.jsp");
-
-		} finally {
-
+			RequestDispatcher rd = request.getRequestDispatcher("/signup.jsp");
 			rd.forward(request, response);
 
 		}

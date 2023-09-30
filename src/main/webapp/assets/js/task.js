@@ -2,37 +2,50 @@
 const addtaskplus = document.getElementById("addtaskplus");
 const addtaskpopup = document.querySelector(".addtaskpopup");
 const taskpage = document.querySelector(".taskpage");
-const savetask = document.getElementById("savetask");
 const cancel = document.getElementById("cancel");
 const updatetask = document.getElementById("updatetask");
 let taskList = document.querySelectorAll(".taskli"); // Use 'querySelectorAll' to select multiple elements
 
-// Event handler for 'addtaskplus' button click
-	addtaskplus.onclick = () => {
-	  addtaskpopup.style.display = "block";
-	  taskpage.style.filter = "blur(3px)";
-	};
 	
 // Event handler for 'cancel' button click
-	cancel.onclick = function () {
-	  addtaskpopup.style.display = "none";
-	  taskpage.style.filter = "none";
-	};
+cancel.onclick = function () {
+  window.location.href = "TaskServlet";
+};
+	
+const toggleChevronIcons = document.querySelectorAll('.toggle-chevron');
+
+toggleChevronIcons.forEach(icon => {
+    icon.addEventListener('click', function() {
+        let subtaskliList = document.querySelectorAll('.subtasklist');
+        subtaskliList.forEach(subtaskli => {
+            if (subtaskli.style.display === 'block' || subtaskli.style.display === '') {
+                subtaskli.style.display = 'none';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-right');
+            } else {
+                subtaskli.style.display = 'block';
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-down');
+            }
+        });
+    });
+});
+
+
+
 	
 	
-const editButton = document.getElementById('editButton');
 const form = document.getElementById('addtaskform');
 const formFields = form.elements;
 let inputElements = document.querySelectorAll("input");
-
+let action;
 	
 	window.onload = function() {
-        // Get the value of the "action" parameter from the URL
-        var urlParams = new URLSearchParams(window.location.search);
-        var action = urlParams.get("action");
+        
+        let urlParams = new URLSearchParams(window.location.search);
+        action = urlParams.get("action");
 
-        // Check if the "action" parameter is "edit" and invoke the function
-        if (action === "edit") {
+        if (action === "edit" || action === "editsubtask") {
             showPopup();
         }
     }
@@ -41,57 +54,47 @@ let inputElements = document.querySelectorAll("input");
 	function showPopup(){
 	    addtaskpopup.style.display = "block";
 	    taskpage.style.filter = "blur(3px)";
-
-		inputElements.forEach(function(inputElement) {
-		    inputElement.disabled = true;
-		});
 	}
 	
-	
 
+function setFormAction(formaction) {
+    let form = document.getElementById("addtaskform");
+    let taskId = document.getElementById("taskId").value;
+	let subtaskId = document.getElementById("subtaskId").value;
+	// let taskStatus = document.getElementById("statusInput").value;
+	let startDate = document.getElementById("startDate").value;
+	let endDate = document.getElementById("endDate").value;
+	let priority = document.getElementById("priorityInput").value
+	let reminder = document.getElementById("reminderInput").value;
+	let notes = document.getElementById("notesFeild").value;
 
-
-	
-
-	
-// Event listener for the 'editButton' click
-	editButton.addEventListener('click', toggleEditMode);
-	
-// Event listener for form submission
-	form.addEventListener('submit', function (event) {
-	  event.preventDefault();
-	  toggleEditMode();
-	});
-	
-// Function to toggle edit mode for form fields
-	function toggleEditMode() {
-	  inputElements.forEach(function(inputElement) {
-		    inputElement.disabled = false;
-		});
-	}
-	
-// Event listener for 'editButton' click to display 'updatetask'
-	editButton.addEventListener('click', function(){
-	  savetask.style.display = "none";
-	  updatetask.style.display = "block";
-	});
-	
-	
-	let taskId = document.getElementById("taskId").value;
-	
-	function setFormAction(action) {
-    var form = document.getElementById("addtaskform");
-    
-    if (action === 'save') {
+    if (formaction === 'save') {
         form.action = "AddTaskServlet";
     } 
-    else if (action === 'update') {
-        form.action = `UpdateTaskServlet?taskId=${taskId}`;
+    else if (formaction === 'update') {
+		if(action === "editsubtask"){
+			form.action = `UpdateSubtaskServlet?subtaskId=${subtaskId}`;
+		}
+		else{
+			form.action = `UpdateTaskServlet?
+				taskId=${taskId}&
+				status=${statusInput}&
+				startDate=${startDate}&
+				endDate=${endDate}&
+				priority=${priority}&
+				reminder=${reminder}&
+				notes=${notes}`;
+		}
     }
-    else if(action === 'delete'){
-		form.action = `DeleteTaskServlet?taskId=${taskId}`;
+    else if(formaction === 'delete'){
+		if(action === "editsubtask"){
+			form.action = `DeleteSubtaskServlet?subtaskId=${subtaskId}`;
+		}
+		else{
+			form.action = `DeleteTaskServlet?taskId=${taskId}`;
+		}
 	}
     
-    // Submit the form
     form.submit();
 }
+

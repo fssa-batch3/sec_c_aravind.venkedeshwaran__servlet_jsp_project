@@ -27,28 +27,21 @@ public class ProfileServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		 HttpSession session = request.getSession();
-	        String email = (String) session.getAttribute("Logedinemail");
+	        User currentUser = (User) session.getAttribute("user");
+	        
+	        String email = currentUser.getEmailId();
 	        
 	        if (email != null) {
-	            try {
 	                
-	                User user = userService.getUserByEmail(email);
+	            session.setAttribute("username", currentUser.getUserName());// used to easily import the name which show in the task page
+	            
+	            session.setAttribute("user", currentUser);
+	            
+	            request.setAttribute("success", "Logged In Success");
 	                
-	                session.setAttribute("username", user.getUserName());
+	            request.getRequestDispatcher("/profile.jsp").forward(request, response);
 	                
-	                request.setAttribute("user", user);
-	                
-//	                String success = (String) request.getAttribute("success");
-	                
-	                request.setAttribute("success", "Logged In Success");
-	                    
-	                request.getRequestDispatcher("/profile.jsp").forward(request, response);
-	                
-	            } 
-	            catch (ServiceException e) {
-	            	System.out.println(e.getMessage());
-	                e.printStackTrace();
-	            }
+	            
 	        } else {
 	            System.out.println("email is null");
 	        }

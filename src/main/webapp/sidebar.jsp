@@ -13,7 +13,7 @@
         <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
         Report
     </a>
-    <a href="#">
+    <a href="<%=request.getContextPath()%>/NotesServlet">
         <i class="fa fa-clone" aria-hidden="true"></i>
         Notes
     </a>

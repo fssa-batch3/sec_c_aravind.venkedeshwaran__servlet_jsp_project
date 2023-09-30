@@ -60,14 +60,14 @@
 		<!--The Total Page starts-->
 		<!-- profile starts -->
 		<div class="profile">
-		
+
 			<!-- Notify Alert -->
 			<%
 			String success = (String) request.getAttribute("success");
 			String error = (String) request.getAttribute("error");
 			%>
-		
-		
+
+
 			<%
 			if (error != null) {
 			%>
@@ -78,14 +78,14 @@
 			<%
 			}
 			%>
-		
+
 			<%
 			if (success != null) {
 			%>
 			<script>
 			    	let success = "<%=success%>";
-					Notify.success(success);
-				</script>
+				Notify.success(success);
+			</script>
 			<%
 			}
 			%>
@@ -103,44 +103,24 @@
 					<form method="post" id="profileform">
 
 						<%
-						User currentUser = (User) request.getAttribute("user");
+						User currentUser = (User) session.getAttribute("user");
 						%>
 
-						<label for="name"> 
-						<input type="text" id="name"
+						<label for="name"> <input type="text" id="name"
 							placeholder="Name" name="username"
 							value="<%=(currentUser != null) ? currentUser.getUserName() : ""%>"
-							disabled> 
-							<span id="edit" onclick="enableEdit()">Edit</span>
-						</label> 
-						
-						<label for="phone number"> <input type="text"
-							id="phonenumber" 
-							name="phonenum"
-							placeholder="Phone Number"> <span
-							id="edit">Edit</span>
-						</label>
-						
-						<br> 
-						
-						
-						<input type="email"
-							id="email" 
-							name="userEmail"
+							disabled> <span id="edit" onclick="enableEdit()">Edit</span>
+						</label> <label for="phone number"> <input type="text"
+							id="phonenumber" name="phonenum" placeholder="Phone Number">
+							<span id="edit">Edit</span>
+						</label> <br> <input type="email" id="email" name="userEmail"
 							placeholder="Email"
 							value="<%=(currentUser != null) ? currentUser.getEmailId() : ""%>"
-							disabled> 
-						
-						
-						<label for="password"> 
-						
-						<input type="password"
-							id="password" 
-							name="userPassword"
+							disabled> <label for="password"> <input
+							type="password" id="password" name="userPassword"
 							value="<%=(currentUser != null) ? currentUser.getPassword() : ""%>"
-							placeholder="Change Password" disabled> 
-							
-							<span id="edit" onclick="enableEdit()">Edit</span>
+							placeholder="Change Password" disabled> <span id="edit"
+							onclick="enableEdit()">Edit</span>
 						</label>
 
 
@@ -231,5 +211,27 @@
 
 	<script src="assets/js/profile.js"></script>
 </body>
+<script>
+	
+	function enableEdit() {
+		document.getElementById("name").disabled = false;
+		document.getElementById("password").disabled = false;
+	}
 
+	function setFormAction(action) {
+		var form = document.getElementById("profileform");
+
+		if (action === 'update') {
+			form.action = "UpdateProfileServlet";
+		} 
+
+		// Submit the form
+		form.submit();
+	}
+
+	function logout() {
+		window.location.href = "index.jsp";
+	}
+	
+</script>
 </html>

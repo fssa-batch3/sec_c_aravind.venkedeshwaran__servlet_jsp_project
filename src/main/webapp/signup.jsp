@@ -52,7 +52,7 @@
 <body>
 
 
-<!-- Sign Up Alerts -->
+	<!-- Sign Up Alerts -->
 	<%
 	String success = (String) request.getAttribute("success");
 	String error = (String) request.getAttribute("error");
@@ -80,7 +80,7 @@
 	<%
 	}
 	%>
-	
+
 
 
 	<img src="assets/images/signupgif1.gif" alt="Sign up Gif"
@@ -122,14 +122,34 @@
 
 		<form action="<%=request.getContextPath()%>/LoginServlet"
 			method="post" id="login" class="input-group">
-			<input type="text" name="emaillogin" id="emaillogin"
-				class="input-field" placeholder="Email" required> <input
-				type="password" name="passwordlogin" id="passwordlogin"
-				class="input-field" placeholder="Password" required> <input
-				type="checkbox" class="check-box"> <span>Remember
-				Password</span>
+			<input 
+				type="text" 
+				name="emaillogin" 
+				id="emaillogin"
+				class="input-field" 
+				placeholder="Email" 
+				value="testuser01@gmail.com"
+				required
+			> 
+			<input
+				type="password" 
+				name="passwordlogin" 
+				id="passwordlogin"
+				class="input-field" 
+				placeholder="Password" 
+				value="P@$$w0rd"
+				required
+			> 
+				
+			<input
+				type="checkbox" 
+				class="check-box"
+			> 
+			<span>
+				Remember
+				Password
+			</span>
 			<button type="submit" class="submit-btn">Log In</button>
-			<!-- <a href="profile.html"></a> -->
 		</form>
 
 		<!-- sign in form ends -->
@@ -152,7 +172,26 @@
 
 
 	<script src="assets/js/signup.js"></script>
+	
+	<script>
+		const loginForm = document.getElementById("login");
+		const registerForm = document.getElementById("register");
+		const btn = document.getElementById("btn");
 
+		function register() {
+			loginForm.style.left = "-400px";
+			registerForm.style.left = "50px";
+			btn.style.left = "110px";
+		}
+
+		function login() {
+			loginForm.style.left = "50px";
+			registerForm.style.left = "450px";
+			btn.style.left = "0";
+		}
+	</script>
 
 </body>
+
+
 </html>
