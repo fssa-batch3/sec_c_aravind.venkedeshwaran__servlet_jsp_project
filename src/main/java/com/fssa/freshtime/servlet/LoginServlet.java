@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
 
 				request.setAttribute("success", "Logged In Success");
 
-				RequestDispatcher rd = request.getRequestDispatcher("/profile.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher("TaskServlet");
 				rd.forward(request, response);
 
 				

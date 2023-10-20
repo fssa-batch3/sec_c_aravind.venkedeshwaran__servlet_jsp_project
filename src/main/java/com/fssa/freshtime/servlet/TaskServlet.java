@@ -32,7 +32,8 @@ public class TaskServlet extends HttpServlet {
 	private static final String VIEW_TASKS_PAGE = "/readTask.jsp";
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
 		TaskService taskservice = new TaskService();
@@ -40,16 +41,18 @@ public class TaskServlet extends HttpServlet {
 		String action = request.getParameter("action");
 
 		try {
-			
+
 			User currentUser = (User) session.getAttribute("user");
-			
+
 			List<Task> listTask = taskservice.readAllTaskByUser(currentUser.getUserId());
+
+			System.out.println("Hi List " + listTask);
 
 			request.setAttribute("listTask", listTask);
 
 		} catch (ServiceException | InvalidInputException e) {
 
-			System.out.println(e.getMessage());
+			Logger.info(e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -65,22 +68,22 @@ public class TaskServlet extends HttpServlet {
 				request.setAttribute("uptTask", task);
 
 			} catch (ServiceException | InvalidInputException e) {
-				System.out.println(e.getMessage());
+				Logger.info(e.getMessage());
 				e.printStackTrace();
 			}
 		}
-		
+
 		if ("editsubtask".equals(action)) {
 
 			int subtaskId = Integer.parseInt(request.getParameter("subtaskId"));
 
 			try {
 				Subtask subtask = taskservice.readSubTaskById(subtaskId);
-				
+
 				request.setAttribute("edSubtask", subtask);
 
 			} catch (ServiceException | InvalidInputException e) {
-				System.out.println(e.getMessage());
+				Logger.info(e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -90,7 +93,8 @@ public class TaskServlet extends HttpServlet {
 
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		doGet(request, response);
 	}

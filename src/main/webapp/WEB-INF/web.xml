@@ -38,18 +38,11 @@
   	<servlet-class>com.fssa.freshtime.servlet.AddSubtaskServlet</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>UpdateSubtaskServlet</servlet-name>
-  	<display-name>UpdateSubtaskServlet</display-name>
-  	<description></description>
-  	<servlet-class>com.fssa.freshtime.servlet.UpdateSubtaskServlet</servlet-class>
-  </servlet>
-  <servlet>
   	<servlet-name>DeleteSubtaskServlet</servlet-name>
   	<display-name>DeleteSubtaskServlet</display-name>
   	<description></description>
   	<servlet-class>com.fssa.freshtime.servlet.DeleteSubtaskServlet</servlet-class>
   </servlet>
-
 
   
   <servlet-mapping>
@@ -73,13 +66,10 @@
   	<url-pattern>/AddSubtaskServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>UpdateSubtaskServlet</servlet-name>
-  	<url-pattern>/UpdateSubtaskServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
   	<servlet-name>DeleteSubtaskServlet</servlet-name>
   	<url-pattern>/DeleteSubtaskServlet</url-pattern>
   </servlet-mapping>
+
 
 
   <error-page>

@@ -1,21 +1,19 @@
 package com.fssa.freshtime.servlet;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.fssa.freshtime.exceptions.ServiceException;
 import com.fssa.freshtime.models.Subtask;
-import com.fssa.freshtime.models.User;
 import com.fssa.freshtime.models.enums.TaskPriority;
 import com.fssa.freshtime.models.enums.TaskStatus;
 import com.fssa.freshtime.services.TaskService;
@@ -24,6 +22,7 @@ import com.fssa.freshtime.utils.Logger;
 /**
  * Servlet implementation class UpdateSubtaskServlet
  */
+@WebServlet("/UpdateSubtaskServlet")
 public class UpdateSubtaskServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -33,44 +32,49 @@ public class UpdateSubtaskServlet extends HttpServlet {
 		TaskService taskservice = new TaskService();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 		
-		// Get parameters from the form
+
 		int subtaskId = Integer.parseInt(request.getParameter("subtaskId"));
         String subtaskName = request.getParameter("taskname");
-        String subtaskDescription = request.getParameter("taskdescription");
-        String notes = request.getParameter("notes");
         
         
         LocalDateTime startDate = null;
-        TaskPriority priority = null;
-        TaskStatus status = null;
-        LocalDateTime reminder = null;
-        
-        try {
-            String startDateParam = request.getParameter("startDate");
-            String priorityParam = request.getParameter("priority");
-            String statusParam = request.getParameter("status");
-            String reminderParam = request.getParameter("reminder");
-            
-            if (startDateParam != null && !startDateParam.isEmpty()) {
-                startDate = LocalDateTime.parse(startDateParam, formatter);
-            }
-            
-            if (priorityParam != null && !priorityParam.isEmpty()) {
-                priority = TaskPriority.valueOf(priorityParam);
-            }
-            
-            if (statusParam != null && !statusParam.isEmpty()) {
-                status = TaskStatus.valueOf(statusParam);
-            }
-            
-            if (reminderParam != null && !reminderParam.isEmpty()) {
-                reminder = LocalDateTime.parse(reminderParam, formatter);
-            }
-        }
-        
-        catch (DateTimeParseException | IllegalArgumentException e) {
-            Logger.info(e.getMessage());
-        }
+		String startDateParam = request.getParameter("startDate");
+		if (startDateParam != null && !startDateParam.isEmpty()) {
+			startDate = LocalDateTime.parse(startDateParam, formatter);
+		}
+
+		LocalDateTime endDate = null;
+		String endDateParam = request.getParameter("endDate");
+		if (endDateParam != null && !endDateParam.isEmpty()) {
+			endDate = LocalDateTime.parse(endDateParam, formatter);
+		}
+
+		TaskPriority priority = null;
+		String priorityParam = request.getParameter("priority");
+		if (priorityParam != null && !priorityParam.isEmpty()) {
+			priority = TaskPriority.valueOf(priorityParam);
+		}
+
+		TaskStatus status = null;
+		String statusParam = request.getParameter("status");
+		if (statusParam != null && !statusParam.isEmpty()) {
+			status = TaskStatus.valueOf(statusParam);
+		}
+		else {
+			status = TaskStatus.TODO;
+		}
+
+		LocalDateTime reminder = null;
+		String reminderParam = request.getParameter("reminder");
+		if (reminderParam != null && !reminderParam.isEmpty()) {
+			reminder = LocalDateTime.parse(reminderParam, formatter);
+		}
+
+		String notes = request.getParameter("notes");
+		
+		if(startDate != null && endDate == null) {
+			endDate = startDate.plusDays(1);
+		}
         
         
         //Setting the subtask Object
@@ -80,10 +84,12 @@ public class UpdateSubtaskServlet extends HttpServlet {
         subtask.setSubtaskId(subtaskId);
         subtask.setSubtaskName(subtaskName);
         subtask.setStartDate(startDate);
+        subtask.setEndDate(endDate);
         subtask.setPriority(priority);
         subtask.setStatus(status);
-        subtask.setNotes(notes);
         subtask.setReminder(reminder);
+        subtask.setNotes(notes);
+        
         
         Logger.info(subtask);
         
@@ -99,7 +105,7 @@ public class UpdateSubtaskServlet extends HttpServlet {
         }	
         catch(ServiceException e) {
         	
-        	System.out.println(e.getMessage());
+        	Logger.info(e.getMessage());
         	e.printStackTrace();
         	
 		    request.setAttribute("error", e.getMessage());
@@ -116,4 +122,8 @@ public class UpdateSubtaskServlet extends HttpServlet {
         
 	}
 
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
+	}
 }

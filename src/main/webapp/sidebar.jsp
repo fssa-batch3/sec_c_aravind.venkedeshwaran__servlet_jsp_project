@@ -9,7 +9,7 @@
         <i class="fa-solid fa-list-check" aria-hidden="true"></i>
         My Task
     </a>
-    <a href="#">
+    <a href="<%=request.getContextPath()%>/ReportServlet">
         <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
         Report
     </a>

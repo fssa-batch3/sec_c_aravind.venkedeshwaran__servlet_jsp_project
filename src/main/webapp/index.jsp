@@ -40,7 +40,7 @@
 
 <body>
 
-<!-- Notify Alert -->
+	<!-- Notify Alert -->
 	<%
 	String success = (String) request.getAttribute("success");
 	String error = (String) request.getAttribute("error");
@@ -62,9 +62,10 @@
 	if (success != null) {
 	%>
 	<script>
-	    	let success = "<%=success%>";
-			Notify.success(success);
-		</script>
+	    	let success = "<%=success%>
+		";
+		Notify.success(success);
+	</script>
 	<%
 	}
 	%>

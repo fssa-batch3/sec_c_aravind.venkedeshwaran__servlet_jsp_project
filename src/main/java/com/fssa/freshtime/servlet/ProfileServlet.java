@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-import com.fssa.freshtime.exceptions.ServiceException;
 import com.fssa.freshtime.models.User;
 import com.fssa.freshtime.services.UserService;
 

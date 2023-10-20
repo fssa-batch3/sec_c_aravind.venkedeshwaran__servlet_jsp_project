@@ -156,7 +156,6 @@
 
 		<p class="or">---(or)---</p>
 
-		<!-- other sign in starts -->
 		<div class="other-signin">
 			<button id="gsign">
 				<img src="assets/images/googleicon.png" alt="Google Icon"
@@ -165,13 +164,7 @@
 
 
 		</div>
-
-		<!-- other sign in ends -->
 	</div>
-
-
-
-	<script src="assets/js/signup.js"></script>
 	
 	<script>
 		const loginForm = document.getElementById("login");

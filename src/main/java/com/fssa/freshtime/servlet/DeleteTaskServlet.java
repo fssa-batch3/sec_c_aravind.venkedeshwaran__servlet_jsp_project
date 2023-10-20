@@ -1,7 +1,6 @@
 package com.fssa.freshtime.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,12 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fssa.freshtime.exceptions.ServiceException;
 import com.fssa.freshtime.services.TaskService;
+import com.fssa.freshtime.utils.Logger;
 
 /**
  * Servlet implementation class DeleteTaskServlet
  */
+
 @WebServlet("/DeleteTaskServlet") 
 public class DeleteTaskServlet extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
 	
 	TaskService taskservice = new TaskService();
@@ -40,7 +42,7 @@ public class DeleteTaskServlet extends HttpServlet {
         }	
         catch(ServiceException e) {
         	
-        	System.out.println(e.getMessage());
+        	Logger.info(e.getMessage());
         	e.printStackTrace();
         	
 		    request.setAttribute("error", e.getMessage());
@@ -56,5 +58,10 @@ public class DeleteTaskServlet extends HttpServlet {
         }
        
 	}
+	
+	@Override
+		protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+			doPost(req, resp);
+		}
 
 }

@@ -1,9 +1,6 @@
 package com.fssa.freshtime.servlet;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,11 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.fssa.freshtime.exceptions.ServiceException;
-import com.fssa.freshtime.models.Task;
 import com.fssa.freshtime.models.User;
-import com.fssa.freshtime.models.enums.TaskPriority;
-import com.fssa.freshtime.models.enums.TaskStatus;
 import com.fssa.freshtime.services.TaskService;
+import com.fssa.freshtime.utils.Logger;
 
 /**
  * Servlet implementation class addtask
@@ -42,7 +37,7 @@ public class AddTaskServlet extends HttpServlet {
             User currentUser = (User) session.getAttribute("user");
 
             int userId = currentUser.getUserId();
-            String taskName = request.getParameter("taskname");
+            String taskName = request.getParameter("taskNameInput");
 
         	taskservice.addTask(userId, taskName);
         	
@@ -55,7 +50,7 @@ public class AddTaskServlet extends HttpServlet {
         }	
         catch(ServiceException e) {
         	
-        	System.out.println(e.getMessage());
+        	Logger.info(e.getMessage());
         	e.printStackTrace();
         	
 		    request.setAttribute("error", e.getMessage());

@@ -1,44 +1,38 @@
-// Get DOM elements
-const addtaskplus = document.getElementById("addtaskplus");
-const addtaskpopup = document.querySelector(".addtaskpopup");
-const taskpage = document.querySelector(".taskpage");
-const cancel = document.getElementById("cancel");
-const updatetask = document.getElementById("updatetask");
-let taskList = document.querySelectorAll(".taskli"); // Use 'querySelectorAll' to select multiple elements
+const tasklists = document.querySelectorAll('#tasklist');
 
-	
-// Event handler for 'cancel' button click
-cancel.onclick = function () {
-  window.location.href = "TaskServlet";
-};
-	
-const toggleChevronIcons = document.querySelectorAll('.toggle-chevron');
+tasklists.forEach(tasklist => {
+	const chevron = tasklist.querySelector('.toggle-chevron');
+    const subtasklist = tasklist.querySelector('.subtasklist');
 
-toggleChevronIcons.forEach(icon => {
-    icon.addEventListener('click', function() {
-        let subtaskliList = document.querySelectorAll('.subtasklist');
-        subtaskliList.forEach(subtaskli => {
-            if (subtaskli.style.display === 'block' || subtaskli.style.display === '') {
-                subtaskli.style.display = 'none';
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-right');
-            } else {
-                subtaskli.style.display = 'block';
-                icon.classList.remove('fa-chevron-right');
-                icon.classList.add('fa-chevron-down');
-            }
-        });
-    });
+	chevron.addEventListener('click', () => {
+		if(subtasklist.style.display === 'none'){
+			subtasklist.style.display = 'block';
+			chevron.classList.remove('fa-chevron-right');
+            chevron.classList.add('fa-chevron-down');
+		}
+		else{
+			subtasklist.style.display = 'none';
+			chevron.classList.remove('fa-chevron-down');
+            chevron.classList.add('fa-chevron-right');
+		}
+    });    
 });
 
 
 
-	
-	
+const addtaskpopup = document.querySelector(".addtaskpopup");
+const taskpage = document.querySelector(".taskpage");
+const cancel = document.getElementById("cancel");
 const form = document.getElementById('addtaskform');
 const formFields = form.elements;
 let inputElements = document.querySelectorAll("input");
 let action;
+
+
+// Event handler for 'cancel' button click
+	cancel.onclick = function () {
+	  window.location.href = "TaskServlet";
+	};
 	
 	window.onload = function() {
         
@@ -55,46 +49,81 @@ let action;
 	    addtaskpopup.style.display = "block";
 	    taskpage.style.filter = "blur(3px)";
 	}
-	
 
-function setFormAction(formaction) {
-    let form = document.getElementById("addtaskform");
-    let taskId = document.getElementById("taskId").value;
-	let subtaskId = document.getElementById("subtaskId").value;
-	// let taskStatus = document.getElementById("statusInput").value;
-	let startDate = document.getElementById("startDate").value;
-	let endDate = document.getElementById("endDate").value;
-	let priority = document.getElementById("priorityInput").value
-	let reminder = document.getElementById("reminderInput").value;
-	let notes = document.getElementById("notesFeild").value;
 
-    if (formaction === 'save') {
-        form.action = "AddTaskServlet";
-    } 
-    else if (formaction === 'update') {
-		if(action === "editsubtask"){
-			form.action = `UpdateSubtaskServlet?subtaskId=${subtaskId}`;
-		}
-		else{
-			form.action = `UpdateTaskServlet?
-				taskId=${taskId}&
-				status=${statusInput}&
-				startDate=${startDate}&
-				endDate=${endDate}&
-				priority=${priority}&
-				reminder=${reminder}&
-				notes=${notes}`;
-		}
-    }
-    else if(formaction === 'delete'){
-		if(action === "editsubtask"){
-			form.action = `DeleteSubtaskServlet?subtaskId=${subtaskId}`;
-		}
-		else{
-			form.action = `DeleteTaskServlet?taskId=${taskId}`;
-		}
-	}
+
+// Show task status options 
+    const dropdownList = document.querySelector(".dropdown-list");
+    const selectedOption = document.querySelector(".selected-option");
+    let statusInput = document.getElementById("statusInput");
     
-    form.submit();
-}
+    statusInput.value = "TODO";
+	
+	    // Toggle the dropdown on click
+	    selectedOption.addEventListener("click", function () {
+	        dropdownList.style.display = (dropdownList.style.display === "block") ? "none" : "block";
+	    });
+	
+		// Handle option selection
+		dropdownList.addEventListener("click", function (e) {
+		    if (e.target.tagName === "LI") {
+		        const selectedIconHTML = e.target.querySelector("i").outerHTML;
+		        selectedOption.innerHTML = `${selectedIconHTML}`;
+		        const selectedValue = e.target.getAttribute("data-value");
+	            statusInput.value = selectedValue;
+		        dropdownList.style.display = "none";
+		        
+		        console.log(statusInput);
+		    }
+		});
+		
+		// Close the dropdown when clicking outside
+	    document.addEventListener("click", function (e) {
+	        if (!selectedOption.contains(e.target) && e.target !== dropdownList) {
+	            dropdownList.style.display = "none";
+	        }
+	    });
+    
+    
 
+
+    
+const priorityDropdownList = document.querySelector(".priority-dropdown-list");
+const selectedPriority = document.querySelector(".selected-priority");
+const priorityInput = document.getElementById("priorityInput");
+    
+    selectedPriority.addEventListener("click", function () {
+        priorityDropdownList.style.display = (priorityDropdownList.style.display === "block") ? "none" : "block";
+    });
+
+ 
+    priorityDropdownList.addEventListener("click", function (e) {
+        if (e.target.tagName === "LI") {
+            const selectedPriorityValue = e.target.getAttribute("data-value");
+            const selectedPriorityText = e.target.textContent;
+            let circleClass;
+            
+            priorityInput.value = selectedPriorityValue;
+
+            if (selectedPriorityValue === "HIGH") {
+                circleClass = "red-circle";
+            } else if (selectedPriorityValue === "MID") {
+                circleClass = "orange-circle";
+            } else if (selectedPriorityValue === "LOW") {
+                circleClass = "green-circle";
+            } else {
+                circleClass = "gray-circle";
+            }
+
+            selectedPriority.innerHTML = `<span class="circle ${circleClass}"></span> ${selectedPriorityText}`;
+            priorityDropdownList.style.display = "none";
+
+        }
+    });
+
+
+    document.addEventListener("click", function (e) {
+        if (!selectedPriority.contains(e.target) && e.target !== priorityDropdownList) {
+            priorityDropdownList.style.display = "none";
+        }
+    });

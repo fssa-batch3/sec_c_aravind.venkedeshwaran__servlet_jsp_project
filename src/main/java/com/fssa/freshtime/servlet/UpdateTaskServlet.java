@@ -1,9 +1,11 @@
 package com.fssa.freshtime.servlet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,97 +25,128 @@ import com.fssa.freshtime.services.TaskService;
 /**
  * Servlet implementation class UpdateTaskServlet
  */
-@WebServlet("/UpdateTaskServlet") 
+@WebServlet("/UpdateTaskServlet")
 public class UpdateTaskServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	TaskService taskservice = new TaskService();
 
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+	}
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		
 		RequestDispatcher rd = null;
-		
-		
-		System.out.println("came to update task servlet");
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		
-		// Get parameters from the form
-		int taskId = Integer.parseInt(request.getParameter("taskId"));
-		System.out.println(taskId);
-		
-        String taskName = request.getParameter("taskname");
-        System.out.println(taskName);
-        
-        LocalDateTime startDate = LocalDateTime.parse(request.getParameter("startDate"), formatter);
-        System.out.println(startDate);
-        
-        LocalDateTime endDate = LocalDateTime.parse(request.getParameter("endDate"), formatter);
-        System.out.println(endDate);
-        
-        TaskPriority priority = TaskPriority.valueOf(request.getParameter("priority"));
-        System.out.println(priority);
-        
-        TaskStatus status = TaskStatus.valueOf(request.getParameter("status"));
-        System.out.println(status);
-        
-        LocalDateTime reminder = LocalDateTime.parse(request.getParameter("reminder") , formatter);
-        System.out.println(reminder);
-        
-        String notes = request.getParameter("notes");
-        System.out.println(notes);
+		HttpSession session = request.getSession(false);
 
-//        try {
-//            HttpSession session = request.getSession();
-//            User currentUser = (User)session.getAttribute("user");
-//            
-//            
-//            Task task = new Task();
-//            
-//            task.setTaskId(taskId);
-//            task.setUserId(currentUser.getUserId());
-//            task.setTaskName(taskName);
-//            task.setDescription(taskDescription);
-//            task.setDueDate(dueDate);
-//            task.setPriority(priority);
-//            task.setStatus(status);
-//            task.setNotes(notes);
-//            task.setReminder(reminder);
-//        	
-//        	
-//        	taskservice.updateTask(task);
-//        	
-//        	request.setAttribute("success", task.getTaskName()+" Task Updated Successfully!");
-//        	
-//        	request.setAttribute("path", "TaskServlet");
-//        	
-//        	rd = request.getRequestDispatcher("TaskServlet");
-//			
-//        }	
-//        catch(ServiceException e) {
-//        	
-//        	System.out.println(e.getMessage());
-//        	e.printStackTrace();
-//        	
-//		    request.setAttribute("error", e.getMessage());
-//		    
-//		    request.setAttribute("path", "TaskServlet");
-//			
-//			rd = request.getRequestDispatcher("TaskServlet");
-//            
-//        }
-//        finally {
-//        	 
-//        	rd.forward(request, response);
-//        }
-        
-		
-	}
-	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doGet(req, resp);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+		User currentUser = (User) session.getAttribute("user");
+
+		int taskId = Integer.parseInt(request.getParameter("taskId"));
+		int userId = currentUser.getUserId();
+
+		String taskName = request.getParameter("taskname");
+		if (taskName == null || taskName.isEmpty()) {
+			System.out.println("taskname is null or empty");
+		}
+
+		LocalDateTime startDate = null;
+		String startDateParam = request.getParameter("startDate");
+		if (startDateParam != null && !startDateParam.isEmpty()) {
+			startDate = LocalDateTime.parse(startDateParam, formatter);
+		}
+
+		System.out.println("StartDate= " + startDate);
+
+		LocalDateTime endDate = null;
+		String endDateParam = request.getParameter("endDate");
+		System.out.println(endDateParam);
+
+		if (endDateParam != null && !endDateParam.isEmpty()) {
+			endDate = LocalDateTime.parse(endDateParam, formatter);
+		}
+
+		System.out.println("EndDate" + endDate);
+
+		TaskPriority priority = null;
+		String priorityParam = request.getParameter("priority");
+		if (priorityParam != null && !priorityParam.isEmpty()) {
+			priority = TaskPriority.valueOf(priorityParam);
+		}
+
+		TaskStatus status = null;
+		String statusParam = request.getParameter("status");
+		if (statusParam != null && !statusParam.isEmpty()) {
+			status = TaskStatus.valueOf(statusParam);
+		} else {
+			status = TaskStatus.TODO;
+		}
+
+		LocalDateTime reminder = null;
+		String reminderParam = request.getParameter("reminder");
+		if (reminderParam != null && !reminderParam.isEmpty()) {
+			reminder = LocalDateTime.parse(reminderParam, formatter);
+		}
+
+		String notes = request.getParameter("notes");
+		String strnote;
+
+		if (!(notes == null)) {
+
+			strnote = notes.trim();
+		} else {
+
+			strnote = null;
+		}
+
+		if (startDate != null && endDate == null) {
+			endDate = startDate.plusDays(1);
+		}
+
+		try {
+
+			Task task = new Task();
+
+			task.setTaskId(taskId);
+			task.setUserId(userId);
+			task.setTaskName(taskName);
+			task.setStartDate(startDate);
+			task.setEndDate(endDate);
+			task.setPriority(priority);
+			task.setStatus(status);
+			task.setNotes(strnote);
+			task.setReminder(reminder);
+
+			System.out.println(task);
+
+			taskservice.updateTask(task);
+
+			request.setAttribute("success", task.getTaskName() + " Task Updated Successfully!");
+
+			request.setAttribute("path", "TaskServlet");
+
+			rd = request.getRequestDispatcher("TaskServlet");
+
+		} catch (ServiceException e) {
+
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+
+			request.setAttribute("error", e.getMessage());
+
+			request.setAttribute("path", "TaskServlet");
+
+			rd = request.getRequestDispatcher("TaskServlet");
+
+		} finally {
+
+			rd.forward(request, response);
+		}
 	}
 
 }
