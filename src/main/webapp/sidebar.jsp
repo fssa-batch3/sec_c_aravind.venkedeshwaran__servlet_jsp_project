@@ -1,6 +1,6 @@
 <aside>
     <div class="logoSection">
-        <a href="index.jsp">
+        <a href="#">
             <img src="assets/images/favicon.png" alt="FreshTime Logo" id="freshtimeLogo">
             Freshtime
         </a>

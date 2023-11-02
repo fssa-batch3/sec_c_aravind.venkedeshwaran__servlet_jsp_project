@@ -13,7 +13,7 @@
 
 .profile-left{
 	margin-top: 50px;
-	margin-left: 80px;
+	margin-left: 300px;
 	padding-right: 5px;
 }
 
@@ -25,6 +25,8 @@ margin-top: 50px;
     box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
     border-radius: 15px;
     backdrop-filter: blur(10px);
+    padding: 30px;
+    padding-right: 100px;
 }
 .profile img{
     height: 300px;
@@ -40,7 +42,6 @@ margin-top: 50px;
     color: #fe8018;
 }
 .profile-card span{
-    margin-left: -43px;
     color:#fe8018;
 }
 .profile-card input{
@@ -56,6 +57,30 @@ margin-top: 50px;
 #email, #password{
     margin-bottom: 30px;
 }
+#newpass, #oldpass{
+	display: none;
+    height: 30px;
+    padding: 5px;
+    margin-top: -25px;
+    margin-left: 90px;
+    margin-bottom: 40px;
+}
+
+
+#changebtn{
+	display: none;
+	border: none;
+    background: linear-gradient(to bottom right, #fe8018, #fe4c68);
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 15px;
+    width: 100px;
+    margin-left: 200px;
+    margin-top: -10px;
+}
+
 .save{
     margin-top: 50px;
     /* margin-left: 200px; */
@@ -92,12 +117,12 @@ margin-top: 50px;
 .bio h3,.personality h2{
     margin-bottom: 20px;
 }
-.edit{
-    margin-left: -50px;
-    font-size: 14px;
+#saveUserName{
+	display: none;
     color: #fe8018;
-    text-decoration: underline;
     cursor: pointer;
+    margin-left: 350px;
+    margin-top: -30px;
 }
 .tag{
     display: flex;
@@ -106,6 +131,7 @@ margin-top: 50px;
 #progress{
     width: 100%;
 }
+
 .tag-line{
     margin-left: 40px;
 }

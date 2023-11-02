@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-//		RequestDispatcher rd = null;
+		RequestDispatcher rd = null;
 
 		UserService userService = new UserService();
 
@@ -50,17 +50,15 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("user", user);
 
 				request.setAttribute("success", "Logged In Success");
-
-				RequestDispatcher rd = request.getRequestDispatcher("TaskServlet");
-				rd.forward(request, response);
+				request.setAttribute("path", "TaskServlet");
+				rd = request.getRequestDispatcher("TaskServlet");
 
 				
 			} else {
 				
 				request.setAttribute("error", "Incorrect Password!!!");
-
-				RequestDispatcher rd = request.getRequestDispatcher("/signup.jsp");
-				rd.forward(request, response);
+				request.setAttribute("path", "TaskServlet");
+				rd = request.getRequestDispatcher("/signup.jsp");
 				
 			}
 
@@ -71,10 +69,11 @@ public class LoginServlet extends HttpServlet {
 			e.printStackTrace();
 
 			request.setAttribute("error", e.getMessage());
-
-			RequestDispatcher rd = request.getRequestDispatcher("/signup.jsp");
+			request.setAttribute("path", "TaskServlet");
+			rd = request.getRequestDispatcher("/signup.jsp");
+		}
+		finally {
 			rd.forward(request, response);
-
 		}
 	}
 }

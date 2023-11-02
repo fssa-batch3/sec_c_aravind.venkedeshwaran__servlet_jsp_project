@@ -43,6 +43,12 @@
   	<description></description>
   	<servlet-class>com.fssa.freshtime.servlet.DeleteSubtaskServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>DeleteNoteServlet</servlet-name>
+  	<display-name>DeleteNoteServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.fssa.freshtime.servlet.DeleteNoteServlet</servlet-class>
+  </servlet>
 
   
   <servlet-mapping>
@@ -68,6 +74,10 @@
   <servlet-mapping>
   	<servlet-name>DeleteSubtaskServlet</servlet-name>
   	<url-pattern>/DeleteSubtaskServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>DeleteNoteServlet</servlet-name>
+  	<url-pattern>/DeleteNoteServlet</url-pattern>
   </servlet-mapping>
 
 

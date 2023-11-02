@@ -16,7 +16,7 @@ body {
         sans-serif;
     animation-name: fadeOutRight;
     animation-delay: 1s;
-    animation-duration: 5s;
+    animation-duration: 10s;
 }
 
 .notify-success {

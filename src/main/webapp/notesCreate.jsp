@@ -143,9 +143,9 @@
 				NoteService noteservice = new NoteService();
 				String notesIdStr = (String) request.getParameter("notesId");
 				Note note = null;
-				if(notesIdStr != null){
+				if (notesIdStr != null) {
 					int notesId = Integer.parseInt(notesIdStr);
-					note =  noteservice.readNotesByNotesId(notesId);
+					note = noteservice.readNotesByNotesId(notesId);
 				}
 				%>
 
@@ -159,7 +159,7 @@
 
 				<button type="submit" id="savenotes" onclick="setFormAction('save')">Save</button>
 				<button type="submit" id="updatenotes" onclick="setFormAction('update')">Update</button>
-				<button type="button" id="deletenotes">Delete</button>
+				<button type="button" id="deletenotes" onclick="setFormAction('delete')">Delete</button>
 
 			</form>
 

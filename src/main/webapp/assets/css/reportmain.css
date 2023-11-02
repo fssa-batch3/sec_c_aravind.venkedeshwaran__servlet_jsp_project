@@ -95,7 +95,7 @@ body {
 
 div[role="progressbar"] {
   --size: 12rem;
-  --fg: #369;
+  --fg: black;
   --bg: #def;
   --pgPercentage: var(--progress-value);
   animation: growProgressBar 3s 1 forwards;
@@ -111,6 +111,8 @@ div[role="progressbar"] {
   font-family: Helvetica, Arial, sans-serif;
   font-size: calc(var(--size) / 5);
   color: var(--fg);
+  
+  margin-left: 75px;
 }
 
 div[role="progressbar"]::before {
@@ -11036,6 +11038,7 @@ a:focus {
 }
 
 #wrapper #content-wrapper {
+	margin-left: 250px;
     background-color: #f8f9fc;
     width: 100%;
     overflow-x: hidden

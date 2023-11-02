@@ -70,28 +70,29 @@
 			%>
 
 			<%
-			List<Task> listTask = (List<Task>) request.getAttribute("listTask");
+			int todoTaskCount = (int) request.getAttribute("todoTaskCount");
 			%>
 			<div class="taskcol">
 				<div class="dailyheader">
 					<div>
 						<p class="Todayschedule">Today's Schedule</p>
+						
 						<p class="totalTask">
-							You've Got <span id="tottask"><%=listTask != null ? listTask.size() : 0%>
+							You've Got <span id="tottask"><%=todoTaskCount%>
 								Task</span> To Do
 						</p>
-						<div class="datentime">
-							<p id="date"></p>
-							<p id="timenow"></p>
-						</div>
+						
+						<p id="addtaskplus"><i class="fa fa-plus addTaskPlus"></i></p> 
 					</div>
+					
+					
 
 				</div>
 
 				<div id="taskandsubtask">
 				
 					<div class="TaskListHeader">
-						<p class="statusheader">Status  <span><i class="fa-solid fa-arrow-up"></i></span> </p>
+						<p class="statusheader">Status</p>
 						<p class="tasknameheader">Task Name  <span><i class="fa-solid fa-arrow-up"></i></span></p>
 						<p class="startdateheader" >Start Date  <span><i class="fa-solid fa-arrow-up"></i></span></p>
 						<p class="enddateheader">End Date  <span><i class="fa-solid fa-arrow-up"></i></span></p>
@@ -99,7 +100,82 @@
 					</div>
 					
 					<p class="taskheaderhr"></p>
-					<%
+					
+					
+					<script type="text/javascript">
+					    // Function to toggle the order between ascending and descending
+					    function toggleOrder(order) {
+					        return order === "ascending" ? "descending" : "ascending";
+					    }
+					
+					    // Function to update the URL and change the icon class
+					    function updateSorting(attribute, order) {
+					        window.location.href = "TaskServlet?action=sort&order=" + order + "&attribute=" + attribute;
+					    }
+					
+					    // Get a reference to the parent element with class "TaskListHeader"
+					    var taskListHeader = document.querySelector(".TaskListHeader");
+					
+					    // Get a NodeList of all <p> elements within the parent element
+					    var headerParagraphs = taskListHeader.querySelectorAll("p");
+					
+					    // Loop through each <p> element
+					    for (var i = 0; i < headerParagraphs.length; i++) {
+					        var pElement = headerParagraphs[i];
+					
+					        // Check if the click event is already added
+					        if (!pElement.hasAttribute("data-clicked")) {
+					            // Attach a click event to each <p> element
+					            pElement.setAttribute("data-clicked", "true"); // Mark as clicked
+					            pElement.onclick = function () {
+					                var attribute = this.getAttribute("data-attribute");
+					                var currentOrder = urlParams.get("order");
+					                var order = currentOrder === "ascending" ? "descending" : "ascending";
+					                updateSorting(attribute, order);
+					            };
+					
+					            // Set the "data-attribute" attribute based on the class name
+					            var className = pElement.className;
+					            if (className === "tasknameheader") {
+					                pElement.setAttribute("data-attribute", "taskname");
+					            } else if (className === "startdateheader") {
+					                pElement.setAttribute("data-attribute", "startdate");
+					            } else if (className === "enddateheader") {
+					                pElement.setAttribute("data-attribute", "enddate");
+					            } else if (className === "priorityheader") {
+					                pElement.setAttribute("data-attribute", "priority");
+					            }
+					        }
+					    }
+					
+					    // get the attribute and order values from the URL
+					    var urlParams = new URLSearchParams(window.location.search);
+					    var attributeName = urlParams.get("attribute");
+					    var order = urlParams.get("order");
+					
+					    // Get the parent element with class corresponding to the attributeName
+					    var parentElement = document.querySelector("." + attributeName + "header");
+					
+					    if (parentElement) {
+					        // Get the <i> element inside the <span> within the parent element
+					        var icon = parentElement.querySelector("span i");
+					
+					        // Update the icon class based on the order
+					        if (order === "ascending") {
+					            icon.classList.remove("fa-arrow-down");
+					            icon.classList.add("fa-arrow-up");
+					        } else {
+					            icon.classList.remove("fa-arrow-up");
+					            icon.classList.add("fa-arrow-down");
+					        }
+					    }
+					
+					
+					</script>
+				
+					<% 
+					List<Task> listTask = (List<Task>) request.getAttribute("listTask");
+					
 					if (listTask != null && !listTask.isEmpty()) {
 						for (Task task : listTask) {
 
@@ -122,40 +198,16 @@
 						<div class="taskli">
 
 							<p class="taskStatus">
-								<%
-								if (status == "TODO") {
-								%><i class="fa-regular fa-square"></i>
-								<%
-								}
-								%>
-								<%
-								if (status == "INPROGRESS") {
-								%><i class="fa-solid fa-play"></i>
-								<%
-								}
-								%>
-								<%
-								if (status == "COMPLETED") {
-								%><i class="fa-regular fa-circle-check"></i>
-								<%
-								}
-								%>
-								<%
-								if (status == "BLOCKER") {
-								%><i class="fa-solid fa-circle-exclamation"></i>
-								<%
-								}
-								%>
-								<%
-								if (status == "OVERDUE") {
-								%><i class="fa-solid fa-triangle-exclamation"></i>
-								<%
-								}
-								%>
+								<%if (status == "TODO") {%><i class="fa-regular fa-square"></i><%}%>
+								<%if (status == "INPROGRESS") {%><i class="fa-solid fa-play"></i><%}%>
+								<%if (status == "COMPLETED") {%><i class="fa-regular fa-circle-check"></i><%}%>
+								<%if (status == "BLOCKER") {%><i class="fa-solid fa-circle-exclamation"></i><%}%>
+								<%if (status == "OVERDUE") {%><i class="fa-solid fa-triangle-exclamation"></i><%}%>
 							</p>
 
 
-							<i class="fa-solid fa-chevron-right toggle-chevron"></i> <a
+							<i class="fa-solid fa-chevron-right toggle-chevron"></i> 
+							<a
 								onclick="getDates()" class="taskName"
 								href="<%=request.getContextPath()%>/TaskServlet?action=edit&taskId=<%=task.getTaskId()%>">
 								<%=task != null ? task.getTaskName() : ""%>
@@ -447,19 +499,6 @@
 					%>
 				</div>
 
-
-				<form action="<%=request.getContextPath()%>/AddTaskServlet"
-					method="post" id="addtaskform">
-
-					<input type="hidden" value=<%=user.getUserId()%> name="userId">
-					<input type="text" id="addtaskbar" placeholder="+ Add Task"
-						name="taskNameInput">
-					<button id="addtaskplus">
-						<i class="fa-solid fa-arrow-up"></i>
-					</button>
-
-				</form>
-
 			</div>
 			<div class="profilecol">
 				<div class="profilesection">
@@ -527,7 +566,7 @@
 					<p></p>
 				</div>
 				<div>
-					<h3 class="taskheading">Update Task</h3>
+					<h3 class="taskheading">Task Details</h3>
 					<p class="taskquote">Tackle your goals in daily doses</p>
 				</div>
 			</div>
@@ -535,6 +574,7 @@
 			<%
 			Task uptTask = (Task) request.getAttribute("uptTask");
 			Subtask edsubtask = (Subtask) request.getAttribute("edSubtask");
+			Task taskRetrieve = (Task) session.getAttribute("taskRetrieve");
 
 			String taskNameField = "";
 			LocalDateTime startDateField = null;
@@ -572,6 +612,22 @@
 					notesField = edsubtask.getNotes().trim();
 				}
 			}
+			
+			else if(taskRetrieve != null){
+				
+				taskNameField = taskRetrieve.getTaskName().trim();
+
+				startDateField = taskRetrieve.getStartDate() != null ? taskRetrieve.getStartDate() : null;
+				endDateField = taskRetrieve.getEndDate() != null ? taskRetrieve.getEndDate() : null;
+				priorityField = taskRetrieve.getPriority() != null ? taskRetrieve.getPriority().toString() : "";
+				statusField = taskRetrieve.getStatus() != null ? taskRetrieve.getStatus().toString() : "";
+				reminderField = taskRetrieve.getReminder() != null ? taskRetrieve.getReminder() : null;
+
+				if (taskRetrieve.getNotes() != null) {
+					notesField = taskRetrieve.getNotes().trim();
+				}
+
+			}
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -608,45 +664,23 @@
 					value="<%=(edsubtask != null) ? edsubtask.getSubtaskId() : ""%>">
 
 				<div class="status-dropdown">
-					<input type="hidden" id="statusInput" name="status"
-						value="<%=statusField%>">
+					<input type="hidden" id="statusInput" name="status" value="<%=statusField%>">
+					
 					<div class="selected-option">
-
-
-						<%
-						if (statusField == "TODO")
-						%>
-						<i class="fa-regular fa-square"></i>
-						<%
-						if (statusField == "INPROGRESS")
-						%>
-						<i class="fa-solid fa-play"></i>
-						<%
-						if (statusField == "COMPLETED")
-						%>
-						<i class="fa-regular fa-circle-check"></i>
-						<%
-						if (statusField == "BLOCKER")
-						%>
-						<i class="fa-solid fa-circle-exclamation"></i>
-						<%
-						if (statusField == "OVERDUE")
-						%>
-						<i class="fa-solid fa-triangle-exclamation"></i>
-
-
+						<%if (statusField == "TODO")%> <i class="fa-regular fa-square"></i>
+						<%if (statusField == "INPROGRESS")%> <i class="fa-solid fa-play"></i>
+						<%if (statusField == "COMPLETED")%> <i class="fa-regular fa-circle-check"></i>
+						<%if (statusField == "BLOCKER")%> <i class="fa-solid fa-circle-exclamation"></i>
+						<%if (statusField == "OVERDUE")%> <i class="fa-solid fa-triangle-exclamation"></i>
+						<%if (statusField.isEmpty())%> <i class="fa-regular fa-square"></i>
 					</div>
+					
 					<ul class="dropdown-list">
-						<li data-value="TODO"><i class="fa-regular fa-square"></i>To
-							Do</li>
-						<li data-value="INPROGRESS"><i class="fa-solid fa-play"></i>
-							In Progress</li>
-						<li data-value="COMPLETED"><i
-							class="fa-regular fa-circle-check"></i> Completed</li>
-						<li data-value="BLOCKER"><i
-							class="fa-solid fa-circle-exclamation"></i> Blocker</li>
-						<li data-value="OVERDUE"><i
-							class="fa-solid fa-triangle-exclamation"></i> Overdue</li>
+						<li data-value="TODO"><i class="fa-regular fa-square"></i>To Do</li>
+						<li data-value="INPROGRESS"><i class="fa-solid fa-play"></i>In Progress</li>
+						<li data-value="COMPLETED"><i class="fa-regular fa-circle-check"></i> Completed</li>
+						<li data-value="BLOCKER"><i class="fa-solid fa-circle-exclamation"></i> Blocker</li>
+						<li data-value="OVERDUE"><i class="fa-solid fa-triangle-exclamation"></i> Overdue</li>
 					</ul>
 				</div>
 
@@ -654,6 +688,7 @@
 					placeholder="Task Name"
 					value="<%if (taskNameField != null) {%><%=taskNameField.trim()%><%}%>"
 					required> <br>
+					<p id="task-error-message" style="color: red;"></p>
 
 				<div class="dueDateBox">
 
@@ -679,9 +714,12 @@
 								<path data-name="Calendar End Date"
 									d="M40 50H8a8 8 0 01-8-8V14a8 8 0 018-8h4V1.5A1.5 1.5 0 0113.5 0h3A1.5 1.5 0 0118 1.5V6h12V1.5A1.5 1.5 0 0131.5 0h3A1.5 1.5 0 0136 1.5V6h4a8 8 0 018 8v28a8 8 0 01-8 8zm2-36a2 2 0 00-2-2H8a2 2 0 00-2 2v28a2 2 0 002 2h32a2 2 0 002-2V14zm-7.5 24h-7a1.5 1.5 0 01-1.5-1.5v-7a1.5 1.5 0 011.5-1.5h7a1.5 1.5 0 011.5 1.5v7a1.5 1.5 0 01-1.5 1.5z"
 									fill-rule="evenodd"></path></svg>
-						</label> <input id="endDate" name="endDate" type="datetime-local"
-							placeholder="Set End Date"
-							value="<%if (endDateFormatted != null) {%><%=endDateFormatted%><%}%>">
+						</label> 
+						<input id="endDate" name="endDate" 
+						       type="datetime-local"
+							   placeholder="Set End Date"
+							   value="<%if (endDateFormatted != null) {%><%=endDateFormatted%><%}%>">
+								<p id="endDate-error-message" style="color: red;"></p>
 					</div>
 				</div>
 
@@ -744,81 +782,80 @@
 						<span><i class="fa-regular fa-note-sticky"></i></span> Notes:
 					</p>
 					<textarea rows="5" cols="40" id="notesFeild" name="notes"><%if (notesField != null) {%><%=notesField.trim()%><%}%></textarea>
+					
 				</div>
+				
+				<p id="notes-error-message" style="color: red;"></p>
 
 
 				<p onclick="setFormAction('delete')" id="deletebtn">
 					<i class="fa-solid fa-trash"></i> Delete
 				</p>
 
-				<p onclick="setFormAction('update')" class="updatetask">
-					<i class="fa-solid fa-pen"></i> Update
-				</p>
+				<p onclick="setFormAction('add')" class="addtask"><i class="fa fa-plus"></i> Add</p>
+				<p onclick="setFormAction('update')" class="updatetask"> <i class="fa-solid fa-pen"></i> Update</p>
 			</form>
 		</div>
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-	<script>
-	
-		// Get a reference to the parent element with class "TaskListHeader"
-		var taskListHeader = document.querySelector(".TaskListHeader");
-	
-		// Get a NodeList of all <p> elements within the parent element
-		var headerParagraphs = taskListHeader.querySelectorAll("p");
-	
-		// Loop through each <p> element
-		for (var i = 0; i < headerParagraphs.length; i++) {
-		    var pElement = headerParagraphs[i];
-		    
-		    // Attach a click event to each <p> element
-		    pElement.onclick = function() {
-		        var attribute = this.getAttribute("data-attribute");
-		        window.location.href = "TaskServlet?action=sort&order=ascending&attribute=" + attribute;
-		    };
-		    
-		    // Set the "data-attribute" attribute based on the class name
-		    var className = pElement.className;
-		    if (className === "statusheader") {
-		        pElement.setAttribute("data-attribute", "status");
-		    } else if (className === "tasknameheader") {
-		        pElement.setAttribute("data-attribute", "taskname");
-		    } else if (className === "startdateheader") {
-		        pElement.setAttribute("data-attribute", "startdate");
-		    } else if (className === "enddateheader") {
-		        pElement.setAttribute("data-attribute", "enddate");
-		    } else if (className === "priorityheader") {
-		        pElement.setAttribute("data-attribute", "priority");
-		    }
-		}
-		
-		// Get the attribute and order values from the URL
-		var urlParams = new URLSearchParams(window.location.search);
-		var attributeName = urlParams.get("attribute");
-		var order = urlParams.get("order");
-
-		// Get the parent element with class "tasknameheader"
-		var taskNameHeader = document.querySelector(".tasknameheader");
-
-		// Get the <i> element inside the <span>
-		var icon = taskNameHeader.querySelector("span i");
-
-		// Check if the attribute is "taskname" and the order is "descending"
-		if (attributeName === "taskname" && order === "descending") {
-		    // Change the class of the <i> element to "fa-arrow-down"
-		    icon.classList.remove("fa-arrow-up");
-		    icon.classList.add("fa-arrow-down");
-		}
-
-		
-	</script>
 		
 	<script>
 	
 		// Setting values to flatpikcr inputs
+		let tasknameInput = document.getElementById("taskname");
 		let startDateValue = document.getElementById("startDate");
 		let endDateValue = document.getElementById("endDate");
 		let reminderValue = document.getElementById("reminderInput");
+		let notesInput = document.getElementById("notesFeild");
+		let notesContainer = document.querySelector(".notesContainer");
+		
+		
+		let taskErrorMessage = document.getElementById("task-error-message");
+		let endDateErrorMessage = document.getElementById("endDate-error-message");
+		let notesErrorMessage = document.getElementById("notes-error-message");
+		
+		
+        // onchange task name input checking the task name is less than three character
+        tasknameInput.addEventListener("change", function () {
+
+            if (tasknameInput.value.length < 3 || tasknameInput.value.length > 50) {
+            	tasknameInput.style.border = "1px solid red";
+            	taskErrorMessage.textContent = "Task Name Can Not be Less Than 3 Character";
+            } else {
+            	taskErrorMessage.textContent = "";
+            	tasknameInput.style.border = "1px solid #0083ff";
+            }
+        });
+
+		
+		
+        // onchange enddate input checking the end date is before start date
+        endDateValue.addEventListener("change", function () {
+            const startDateVal = new Date(startDateValue.value);
+            const endDateVal = new Date(endDateValue.value);
+
+            if (endDateVal < startDateVal) {
+            	endDateValue.style.border = "1px solid red";
+            	endDateErrorMessage.textContent = "End date cannot be before start date";
+            } else {
+            	endDateErrorMessage.textContent = "";
+            	endDateValue.style.border = "1px solid #0083ff";
+            }
+        });
+        
+        
+        // onchange task name input checking the task name is less than three character
+        notesInput.addEventListener("change", function () {
+
+            if (notesInput.value.length < 10 || notesInput.value.length > 150) {
+            	notesContainer.style.border = "1px solid red";
+            	notesErrorMessage.textContent = "Task Name Can Not be Less Than 3 Character";
+            } else {
+            	notesErrorMessage.textContent = "";
+            	notesContainer.style.border = "1px solid #0083ff";
+            }
+        });
 
 		startDateValue.value = datetimeLocal(startDate);
 		endDateValue.value = datetimeLocal(endDate);
@@ -839,6 +876,9 @@
 
 			form.method = "post";
 
+			if(formaction === 'add'){
+				form.action = `AddTaskServlet`;
+			}
 			if (formaction === 'update') {
 				if (action === "editsubtask") {
 					form.action = `UpdateSubtaskServlet?subtaskId=${subtaskId}`;
@@ -855,6 +895,7 @@
 
 			form.submit();
 		}
+
 		
 
 	</script>

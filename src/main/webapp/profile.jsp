@@ -2,9 +2,10 @@
 	pageEncoding="ISO-8859-1"%>
 
 
-<%@ page import="com.fssa.freshtime.models.User"%>
+<%@ page import="com.fssa.freshtime.models.*"%>
 <%@ page import="org.json.JSONString"%>
 <%@ page import="java.util.*"%>
+<%@ page import="com.fssa.freshtime.services.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
@@ -61,34 +62,8 @@
 		<!-- profile starts -->
 		<div class="profile">
 
-			<!-- Notify Alert -->
-			<%
-			String success = (String) request.getAttribute("success");
-			String error = (String) request.getAttribute("error");
-			%>
-
-
-			<%
-			if (error != null) {
-			%>
-			<script>
-				    let error = "<%=error%>";
-				    Notify.error(error);
-				</script>
-			<%
-			}
-			%>
-
-			<%
-			if (success != null) {
-			%>
-			<script>
-			    	let success = "<%=success%>";
-				Notify.success(success);
-			</script>
-			<%
-			}
-			%>
+			<!-- Adding Task Alert -->
+			<jsp:include page="alert.jsp"></jsp:include>
 
 			<jsp:include page="sidebar.jsp"></jsp:include>
 
@@ -103,54 +78,37 @@
 					<form method="post" id="profileform">
 
 						<%
-						User currentUser = (User) session.getAttribute("user");
+						UserService userService = new UserService();
+						User user = (User) session.getAttribute("user");
+						User currentUser = userService.getUserByEmail(user.getEmailId());
 						%>
 
-						<label for="name"> <input type="text" id="name"
-							placeholder="Name" name="username"
-							value="<%=(currentUser != null) ? currentUser.getUserName() : ""%>"
-							disabled> <span id="edit" onclick="enableEdit()">Edit</span>
-						</label> <label for="phone number"> <input type="text"
-							id="phonenumber" name="phonenum" placeholder="Phone Number">
-							<span id="edit">Edit</span>
-						</label> <br> <input type="email" id="email" name="userEmail"
+						<label for="name"> User Name: 
+							<input type="text" id="name"
+								placeholder="Name" name="username"
+								value="<%=(currentUser != null) ? currentUser.getUserName() : ""%>"
+								disabled> 
+								<span id="edit" onclick="enableEdit()">Edit</span>
+								<span id="saveUserName" onclick="setFormAction('changename')">Save</span>
+						</label>
+						
+						<br>
+
+						<label> Email Id: 
+							<input type="email" id="email" name="userEmail"
 							placeholder="Email"
 							value="<%=(currentUser != null) ? currentUser.getEmailId() : ""%>"
-							disabled> <label for="password"> <input
-							type="password" id="password" name="userPassword"
-							value="<%=(currentUser != null) ? currentUser.getPassword() : ""%>"
-							placeholder="Change Password" disabled> <span id="edit"
-							onclick="enableEdit()">Edit</span>
+							disabled> 
 						</label>
-
-
-						<div class="tag-line">
-							<h2>Statistics:</h2>
-							<button>
-								<i class="fa fa-fire" style="font-size: 18px; color: red"></i>
-								&nbsp; 21 Day Streak
-							</button>
-							<button>
-								<i class="fa fa-bolt" style="font-size: 18px; color: gold;"></i>
-								1500 Total XP
-							</button>
-							<br>
-							<button>
-								<i class="fa fa-shield" style="font-size: 18px; color: gold"></i>&nbsp;
-								Gold League
-							</button>
-							<button>
-								<i class="fa fa-trophy" style="font-size: 18px; color: red"></i>&nbsp;
-								5 Times in Top 3's
-							</button>
-						</div>
-
-						<div class="savendel">
-							<button class="save" onclick="setFormAction('update')">Save</button>
-							<a class="save" href="index.jsp" style="text-decoration: none;">LogOut</a>
-							<button class="save" onclick="setFormAction('delete')">Sign
-								Out</button>
-						</div>
+						
+						<br>
+							
+						<label for="password"> Password: 
+							<input placeholder="Old Password" id="oldpass" required="required">	
+							<input placeholder="New Password" id="newpass" required="required">		
+							<span id="changepass" onclick="revealNewPassInput()">Change Password</span>
+							<button id="changebtn" onclick="setFormAction('changepass')">Change</button>
+						</label>
 
 					</form>
 
@@ -158,46 +116,50 @@
 				<!-- profile card ends -->
 			</div>
 			<!-- profile left ends -->
+			
+			
+			<%
+				int totalTask = (int) request.getAttribute("totalTask");
+				int todoTask = (int) request.getAttribute("todoTask");
+				int inprogressTask = (int) request.getAttribute("inprogressTask");
+				int completedTask = (int) request.getAttribute("completedTask");
+				int overdueTask = (int) request.getAttribute("overdueTask");
+				
+				int todoTaskPercent = (int)((double)todoTask / totalTask * 100);
+				int inprogressTaskPercent = (int)((double)inprogressTask/totalTask *100);
+				int completedTaskPercent = (int)((double)completedTask/totalTask *100);
+				int overdueTaskPercent = (int)((double)overdueTask/totalTask *100);
+			%>
+			
 			<div class="profile-right">
-				<div class="bio">
-					<h3>Your Bio:</h3>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Voluptatum dignissimos consequuntur molestias sequi obcaecati
-						totam eveniet autem omnis corporis, consectetur voluptas aperiam,
-						dolores cum? Itaque sequi ducimus quam veritatis sed!</p>
-				</div>
+
 
 				<div class="personality">
-					<h2>Personality:</h2>
+					<h2>Task Overview:</h2>
 					<div class="tag">
-						<p>Introvert</p>
-						<p>Extrovert</p>
+						<p>To Do Task</p>
 					</div>
-					<progress id="progress" value="25" max="100"> 65% </progress>
+					<progress id="progress" value="<%= todoTaskPercent %>" max="100"><%= todoTaskPercent %>%</progress>					<div class="tag">
+						<p>In Progress</p>
+					</div>
+					<progress id="progress" value="<%= inprogressTaskPercent %>" max="100"><%= inprogressTaskPercent %>%</progress>
 					<div class="tag">
-						<p>Analytical</p>
-						<p>Creative</p>
+						<p>Completed</p>
 					</div>
-					<progress id="progress" value="80" max="100"> 65% </progress>
+					<progress id="progress" value="<%= completedTaskPercent %>" max="100"><%= completedTaskPercent %>%</progress>
 					<div class="tag">
-						<p>Loyal</p>
-						<p>Fickle</p>
+						<p>Overdue</p>
 					</div>
-					<progress id="progress" value="50" max="100"> 65% </progress>
-					<div class="tag">
-						<p>Passive</p>
-						<p>Active</p>
-					</div>
-					<progress id="progress" value="65" max="100"> 65% </progress>
+					<progress id="progress" value="<%= overdueTaskPercent %>" max="100"><%= overdueTaskPercent %>%</progress>
 				</div>
 				<div class="progress">
 					<h3>Acheived Task</h3>
 					<div class="achieved">
 						<p>
-							All Time <br> 100 Task
+							All Time <br> <%=totalTask%> Task
 						</p>
 						<p>
-							This Week <br> 10 Task
+							This Week <br> 1 Task
 						</p>
 						<p>
 							Today <br> 1 Task
@@ -212,17 +174,37 @@
 	<script src="assets/js/profile.js"></script>
 </body>
 <script>
+
+let usernameInput = document.getElementById("name");
+let newpassElement = document.getElementById("newpass");
+let oldpassElement = document.getElementById("oldpass");
+let changepassElement = document.getElementById("changepass");
+let changebtn = document.getElementById("changebtn");
+let editspan = document.getElementById("edit");
+
+
+function revealNewPassInput() {
+    newpassElement.style.display = "block";
+    oldpassElement.style.display = "block";
+    changebtn.style.display = "block";
+    changepassElement.style.display = "none"; 
+};
+
 	
 	function enableEdit() {
-		document.getElementById("name").disabled = false;
-		document.getElementById("password").disabled = false;
+		usernameInput.disabled = false;
+		editspan.style.display = "none";
+		document.getElementById("saveUserName").style.display = "block";
 	}
 
 	function setFormAction(action) {
 		var form = document.getElementById("profileform");
 
-		if (action === 'update') {
-			form.action = "UpdateProfileServlet";
+		if (action === 'changename') {
+			form.action = `UpdateProfileServlet?action=changename&username=${usernameInput.value}`;
+		} 
+		if (action === 'changepass') {
+			form.action = `UpdateProfileServlet?action=changepass&oldpass=${oldpassElement.value}&newpass=${newpassElement.value}`;
 		} 
 
 		// Submit the form
@@ -232,6 +214,9 @@
 	function logout() {
 		window.location.href = "index.jsp";
 	}
+	
+
+
 	
 </script>
 </html>

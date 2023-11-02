@@ -8,13 +8,14 @@
 	String error = (String) request.getAttribute("error");
 	String success = (String) request.getAttribute("success");
 	String path = (String) request.getAttribute("path");
+
 	
 	if (error != null) {%>
 		let error = "<%=error%>";
 	    Notify.error(error);
 		setTimeout(() => {
 			window.location.href="<%=path%>";
-		}, 1000);
+		}, 3500);
 			
 		<%}%>
 		
@@ -23,7 +24,7 @@
         Notify.success(success);
         
         setTimeout(() => {
-			window.location.href="TaskServlet";
-		}, 1000);
+			window.location.href= "<%=path%>";
+		}, 3500);
 	<%}%>
 </script>

@@ -24,7 +24,7 @@
 	padding-left: 80px;
 	width: 850px;
 	height: 100vh;
-	margin-right: 40px;
+    margin-left: 250px;
 	overflow-y: scroll;
 }
 
@@ -44,6 +44,7 @@
 	font-weight: 700;
 }
 
+
 .totalTask {
 	margin-top: 20px;
 	font-size: 32px;
@@ -52,6 +53,23 @@
 
 #tottask {
 	color: #0083ff;
+}
+
+#addtaskplus {
+    height: 50px;
+    width: 50px;
+    background-color: var(--primaycolor);
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    position: relative;
+    top: -90px;
+    left: 615px;
+}
+.addTaskPlus{
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    font-size: 22px;
+    color: white;
 }
 
 #taskandsubtask {
@@ -114,6 +132,7 @@
 	padding: 20px;
 	text-align: center;
 	align-items: center;
+	outline: 1px solid #eeebeb;
 }
 
 .taskli:hover,
@@ -214,17 +233,7 @@
 }
 
 
-#addtaskplus {
-	height: 40px;
-	width: 40px;
-	background-color: var(--primaycolor);
-	border-radius: 30px;
-	position: fixed;
-	top: 815px;
-	left: 935px;
-	color: white;
-	border: none;
-}
+
 
 .subtaskNameInput {
 	margin-top: 30px;
@@ -307,7 +316,7 @@
 	left: 450px;
 	background-color: white;
 	padding: 30px;
-	height: 650px;
+	height: 720px;
 	width: 470px;
 	border-radius: 30px;
 	animation-name: down;
@@ -366,7 +375,11 @@
 	cursor: pointer;
 	display: none;
 	border-radius: 15px;
-	box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+	position: absolute;
+    right: 40px;
+    background-color: white;
+    top: 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
 }
 
 .dropdown-list li {
@@ -421,30 +434,23 @@
 
 /* Task Due Dates Style*/
 
-
-*,
-*:before,
-*:after {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-}
-
 #startDate,
 #endDate,
 #reminderInput {
-	background-color: #0080ff;
+	background-color: #f1f1f1;
 	font-family: "Roboto Mono", monospace;
-	margin-bottom: 20px;
-	color: #ffffff;
+	margin-bottom: 30px;
+	margin-left: 15px;
+	color: #000000;
 	font-size: 18px;
 	border: none;
-	outline: none;
-	border-radius: 5px;
+    outline: 1px solid #c4c2c2;
+    border-radius: 5px;
+    padding: 5px;
 }
 
-#startDate {
-	margin-top: 50px;
+#startDate, #reminderInput {
+	margin-top: 20px;
 }
 
 ::-webkit-calendar-picker-indicator {
@@ -458,20 +464,28 @@
 	width: 4px;
 	height: 25px;
 	background-color: black;
-	margin: 2px 0px 2px 5.5px;
+	margin: 2px 0px 18px 5.5px;
 	border-radius: 5px;
 
 
 }
 
 .startDate-group {
-	margin-bottom: -20px;
+	margin-bottom: -30px;
 }
 
 .endDate-group {
 	margin-top: -15px;
 }
-
+#task-error-message{
+	margin-left: 35px;
+}
+#endDate-error-message{
+	margin-top: -20px;
+    margin-left: 40px;
+    margin-bottom: 10px;
+	
+}
 /* Task Priority Style*/
 
 
@@ -525,9 +539,6 @@
 
 /* Task Reminder Style */
 .reminderBox {
-	width: 400px;
-	padding: 5px;
-	border-radius: 8px;
 	margin-top: -25px;
 }
 
@@ -578,7 +589,7 @@
 	margin-top: 20px;
 	font-size: 16px;
 }
-
+.addtask,
 .updatetask,
 #deletebtn {
 	width: 100px;
@@ -594,9 +605,13 @@
 
 }
 
-.updatetask {
+.addtask, .updatetask {
+	background-color: #0083FF;
 	left: 255px;
 	top: -20px;
+}
+.updatetask {
+	display: none;
 }
 
 #deletebtn {
@@ -613,9 +628,4 @@
 	color: black;
 	font-size: 20px;
 	cursor: pointer;
-}
-
-#savetask,
-.updatetask {
-	background-color: #0083FF;
 }

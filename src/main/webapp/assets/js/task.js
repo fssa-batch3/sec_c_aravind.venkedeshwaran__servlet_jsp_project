@@ -24,7 +24,7 @@ const addtaskpopup = document.querySelector(".addtaskpopup");
 const taskpage = document.querySelector(".taskpage");
 const cancel = document.getElementById("cancel");
 const form = document.getElementById('addtaskform');
-const formFields = form.elements;
+// const formFields = form.elements;
 let inputElements = document.querySelectorAll("input");
 let action;
 
@@ -39,18 +39,21 @@ let action;
         let urlParams = new URLSearchParams(window.location.search);
         action = urlParams.get("action");
 
-        if (action === "edit" || action === "editsubtask") {
-            showPopup();
-        }
+		if (action === "edit" || action === "editsubtask") {
+		    showPopup();
+		    document.querySelector(".addtask").style.display = "none";
+		    document.querySelector(".updatetask").style.display = "block";
+		}
+
     }
-	
-	
-	function showPopup(){
+    
+    function showPopup(){
 	    addtaskpopup.style.display = "block";
 	    taskpage.style.filter = "blur(3px)";
 	}
-
-
+	
+	document.getElementById("addtaskplus").onclick = showPopup;
+	
 
 // Show task status options 
     const dropdownList = document.querySelector(".dropdown-list");

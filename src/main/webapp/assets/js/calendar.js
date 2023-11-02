@@ -38,6 +38,8 @@ const renderCalendar = () => {
 }
 renderCalendar();
 
+
+
 prevNextIcon.forEach(icon => { // getting prev and next icons
     icon.addEventListener("click", () => { // adding click event on both icons
         // if clicked icon is previous icon then decrement current month by 1 else increment it by 1
@@ -53,4 +55,29 @@ prevNextIcon.forEach(icon => { // getting prev and next icons
         }
         renderCalendar(); // calling renderCalendar function
     });
+});
+
+
+// Function to handle the click event on a date
+const handleDateClick = (event) => {
+    const selectedDate = event.target.textContent; // Get the selected date text
+    const selectedMonth = currMonth + 1; // Current month (adding 1 because months are 0-based)
+    const selectedYear = currYear; // Current year
+    const selectedDateElement = event.target;
+
+    // Change the background color and border radius of the selected date
+    selectedDateElement.style.backgroundColor = "#1363CF";
+    selectedDateElement.style.borderRadius = "50%";
+
+    // Construct the URL with the selected date, month, and year parameters
+    const url = `TaskServlet?selectedDate=${selectedYear}-${selectedMonth}-${selectedDate}`;
+
+    // Navigate to the URL
+    window.location.href = url;
+}
+
+// Adding click event listeners to each date element
+const dateElements = document.querySelectorAll(".days li");
+dateElements.forEach((dateElement) => {
+    dateElement.addEventListener("click", handleDateClick);
 });

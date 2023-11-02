@@ -74,7 +74,7 @@
                         <!-- Bar Chart -->
                         <div class="card shadow mb-3" style="width: 100%;">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Completed Task</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Completed Vs Uncompleted Task</h6>
                             </div>
                             <div class="card-body">
                                 <div class="chart-bar">
@@ -86,7 +86,7 @@
                         <!-- Area Chart -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Productive perfomance</h6>
                             </div>
                             <div class="card-body">
                                 <div class="chart-area">
@@ -104,7 +104,7 @@
                         <div class="card shadow mb-4">
                             <!-- Card Header - Dropdown -->
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Task Ratio</h6>
                             </div>
                             <!-- Card Body -->
                             <div class="card-body">
@@ -118,7 +118,7 @@
                         <div class="card shadow mb-4">
                             <!-- Card Header - Dropdown -->
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Productivity Percentage</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Overall Productivity Percentage</h6>
                             </div>
                             <!-- Card Body -->
                             <div class="card-body">
@@ -311,9 +311,9 @@
 	    		datasets: [
 	    			{
 	    				label: "Completed Task",
-	    				backgroundColor: "#3fa0f8",
-	    				hoverBackgroundColor: "#2e59d9",
-	    				borderColor: "#3fa0f8",
+	    				backgroundColor: "#5754f7",
+	    				hoverBackgroundColor: "#5754f7",
+	    				borderColor: "#5754f7",
 	    				pointRadius: 0,
 	    				fill: false,
 	    				borderWidth: 1,
@@ -322,9 +322,9 @@
 	    			},
 	    			{
 	    				label: "Total Task",
-	    				borderColor: '#46CFEB',
-	    				backgroundColor: '#46CFEB',
-	    				hoverBackgroundColor: '#46CFEB',
+	    				borderColor: '#9993ff',
+	    				backgroundColor: '#9993ff',
+	    				hoverBackgroundColor: '#9993ff',
 	    				pointRadius: 0,
 	    				fill: false,
 	    				borderWidth: 1,
@@ -469,7 +469,7 @@
 	        labels: ["Todo", "Inprogress", "Completed", "Overdue", "Blocked"],
 	        datasets: [{
 	          data: [todoCount, inprogressTaskCount, completedTaskCount, overdueTaskCount, blockedTaskCount],//change
-	          backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc','#e5e5e5','#F75802'],
+	          backgroundColor: ['#ffde5c', '#1cc88a', '#5754f7','#e5e5e5','#F75802'],
 	          hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
 	          hoverBorderColor: "rgba(234, 236, 244, 1)",
 	        }],

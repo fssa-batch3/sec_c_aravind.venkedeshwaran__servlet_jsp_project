@@ -127,8 +127,8 @@
 				name="emaillogin" 
 				id="emaillogin"
 				class="input-field" 
-				placeholder="Email" 
-				value="testuser01@gmail.com"
+				placeholder="Email"
+				value="testuser01@gmail.com" 
 				required
 			> 
 			<input

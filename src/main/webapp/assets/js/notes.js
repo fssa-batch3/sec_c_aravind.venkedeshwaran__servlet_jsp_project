@@ -36,6 +36,9 @@ function setFormAction(action) {
 	else if (action === 'update') {
 		form.action = `UpdateNoteServlet?notesId=${notesId}`;
 	}
+	else if(action === 'delete'){
+		form.action = `DeleteNoteServlet?notesId=${notesId}`;
+	}
 
 	// Submit the form
 	form.submit();

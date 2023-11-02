@@ -60,16 +60,18 @@
 			<div class="page-content container note-has-grid">
 
 				<div class="notesHeader">
-					<p class="wish">
-						Good Morning,
-						<%=session.getAttribute("username")%><span class="dot">.</span>
-					</p>
-					<p class="quotes">When heart speaks take good notes.</p>
+					<div>
+						<p class="wish">
+							Good Morning,
+							<%=session.getAttribute("username")%><span class="dot">.</span>
+						</p>
+						<p class="quotes">When heart speaks take good notes.</p>
 
+					</div>
 					<form class="searchbar"
-						action="<%=request.getContextPath()%>/NotesServlet" >
-						<input type="search" id="searchTerm" name="searchTerm">
-						<button type="submit">Search</button>
+						action="<%=request.getContextPath()%>/NotesServlet">
+						<input type="search" id="searchTerm" name="searchTerm" placeholder="search Notes"> 
+						<button type="submit" class="searchbtn">Search</button>
 					</form>
 				</div>
 
@@ -102,49 +104,70 @@
 					%>
 
 				</ul>
-				<div class="nav-item ml-auto addNotes"><a
-					href="<%=request.getContextPath()%>/notesCreate.jsp"
-					class="nav-link btn-primary rounded-pill d-flex align-items-center px-3"
-					id="add-notes"> <i class="icon-note m-1"></i> <span
+				<div class="nav-item ml-auto addNotes">
+					<a href="<%=request.getContextPath()%>/notesCreate.jsp"
+						class="nav-link btn-primary rounded-pill d-flex align-items-center px-3"
+						id="add-notes"> <i class="icon-note m-1"></i> <span
 						class="d-none d-md-block font-14">Add Notes</span>
-				</a></div>
+					</a>
+				</div>
 
 
 
 				<div class="tab-content bg-transparent">
-					<div id="note-full-container" class="note-has-grid row">
-
-						<%
-						List<Note> allNotes = (List<Note>) request.getAttribute("allNotes");
-						for (Note note : allNotes) {
-						%>
-
-						<a href="notesCreate.jsp?notesId=<%=note.getNotesId()%>"
-							class="col-md-4 single-note-item all-category">
-							<div class="card card-body">
-								<span class="side-stick"></span>
-								<h5 class="note-title text-truncate w-75 mb-0"><%=note.getHeading()%><i
-										class="point fa fa-circle ml-1 font-10"></i>
-								</h5>
-								<p class="note-date font-12 text-muted"><%=note.getCreatedOn()%></p>
-
-								<div class="note-content">
-									<p class="note-inner-content text-muted" id="notesContent"><%=note.getNotes()%></p>
-								</div>
-								<div class="d-flex align-items-center">
-									<span class="mr-1"><i class="fa fa-star favourite-note"></i></span>
-									<span class="mr-1"><i class="fa fa-trash remove-note"></i></span>
-
-								</div>
-							</div>
-						</a>
-						<%
-						}
-						%>
-					</div>
+				    <div id="note-full-container" class="note-has-grid row">
+				        <%
+				        List<Note> allNotes = (List<Note>) request.getAttribute("allNotes");
+				        System.out.println(allNotes);
+				        if (allNotes != null) {
+				            for (Note note : allNotes) {
+				        %>
+				        <a href="notesCreate.jsp?notesId=<%= note.getNotesId() %>" class="col-md-4 single-note-item all-category">
+				            <div class="card card-body">
+				                <span class="side-stick"></span>
+				                <h5 class="note-title text-truncate w-75 mb-0"><%= note.getHeading() %><i
+				                        class="point fa fa-circle ml-1 font-10"></i>
+				                </h5>
+				                <p class="note-date font-12 text-muted"><%= note.getCreatedOn() %></p>
+				
+				                <div class="note-content">
+				                    <p class="note-inner-content text-muted" id="notesContent"><%= note.getNotes() %></p>
+				                </div>
+				            </div>
+				        </a>
+				        <%
+				        }
+				        } else {
+				        %>
+				        <img alt="no notes img" src="assets/images/nonotes.png">
+				        <%
+				        }
+				        %>
+				    </div>
 				</div>
+
+
 			</div>
 		</div>
 	</div>
+		<script>
+		    // Function to convert HTML to plain text
+		    function htmlToPlainText(html) {
+		        const tempDiv = document.createElement('div');
+		        tempDiv.innerHTML = html;
+		        return tempDiv.textContent || tempDiv.innerText;
+		    }
+		
+		    // Get all elements with the class .note-content
+		    const notesContentList = document.querySelectorAll('.note-content');
+		
+		    // Iterate through all elements and convert HTML to plain text for each one
+		    notesContentList.forEach(notesContent => {
+		        const htmlContent = notesContent.innerHTML; // Assuming note.getNotes() returns HTML
+		        notesContent.textContent = htmlToPlainText(htmlContent);
+		    });
+		</script>
+
+
 </body>
 </html>
