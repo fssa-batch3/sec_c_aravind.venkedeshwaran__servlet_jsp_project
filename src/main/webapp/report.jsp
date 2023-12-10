@@ -147,9 +147,6 @@
     <script src="assets/js/mainchart.js"></script>
     
     
-    <!-- <script src="assets/js/taskPieChart.js"></script>
-    <script src="assets/js/scorePieChart.js"></script> -->
-    
     
     <script type="text/javascript">
     

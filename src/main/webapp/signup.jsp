@@ -128,7 +128,6 @@
 				id="emaillogin"
 				class="input-field" 
 				placeholder="Email"
-				value="testuser01@gmail.com" 
 				required
 			> 
 			<input
@@ -137,7 +136,6 @@
 				id="passwordlogin"
 				class="input-field" 
 				placeholder="Password" 
-				value="P@$$w0rd"
 				required
 			> 
 				

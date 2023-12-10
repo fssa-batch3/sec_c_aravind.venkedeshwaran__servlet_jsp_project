@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fssa.freshtime.exceptions.DAOException;
-import com.fssa.freshtime.exceptions.InvalidInputException;
 import com.fssa.freshtime.exceptions.ServiceException;
 import com.fssa.freshtime.models.User;
 import com.fssa.freshtime.services.UserService;
